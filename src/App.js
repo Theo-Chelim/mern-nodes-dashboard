@@ -1,111 +1,49 @@
-import './App.css';
-import { Card, Button, Navbar, Nav, Container, Row, Col, ButtonGroup } from "react-bootstrap"
-import { MDBBadge } from 'mdb-react-ui-kit';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-import { FaReact, FaPowerOff, FaBurn } from "react-icons/fa";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
-function App() {
+import Navigation from "./Navigation";
 
-  const physical_edges_id = [...Array(10).keys()];
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+        <Navigation />
 
-  const physical_items = [];
-  for (let i = 0; i < physical_edges_id.length; i += 6) {
-    const items = [];
-    for (let j = i; j < i + 6 && j < physical_edges_id.length; j++) {
-      items.push(
-        <Col xs={12} md={2}>
-          <Card className="shadow h-100">
-            <Card.Body>
-              <Card.Title>Node {j + 1}</Card.Title>
-              <Card.Subtitle className="text-muted mb-2">192.168.1.{j + 1}</Card.Subtitle>
-              <Card.Text className="text-center">
-                <MDBBadge color="success" > Available </MDBBadge>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer className="text-center">
-              <Button variant="secondary"><FaPowerOff /></Button> <Button variant="secondary"><FaBurn /></Button>
-            </Card.Footer>
-          </Card>
-        </Col>
-      );
-    }
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">about</Link>
+          </li>
+          <li>
+            <Link to="/test">Test</Link>
+          </li>
+        </ul>
+        <Switch>
+          <Route exact path="/">
+            <Container>
+              <Box>
+                {[...new Array(160)]
+                  .map(
+                    () => `Cras mattis consectetur purus sit amet fermentum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
+                  )
+                  .join("\n")}
+              </Box>
+            </Container>
+          </Route>
+          <Route path="/about">About</Route>
+          <Route path="/test">Test</Route>
+        </Switch>
 
-    physical_items.push(<div><Row className="show-grid">{items}</Row><br /></div>)
+      </Router>
+    );
   }
-
-  const virtual_edges_id = [...Array(240).keys()];
-
-  const virtual_items = [];
-  for (let i = 0; i < virtual_edges_id.length; i += 6) {
-    const items = [];
-    for (let j = i; j < i + 6 && j < virtual_edges_id.length; j++) {
-      items.push(
-        <Col xs={12} md={2}>
-          <Card className="shadow h-100">
-            <Card.Body>
-              <Card.Title>Node {j + 11}</Card.Title>
-              <Card.Subtitle className="text-muted mb-2">192.168.1.{j + 11}</Card.Subtitle>
-              <Card.Text className="text-center">
-                <MDBBadge color="success" > Available </MDBBadge>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer className="text-center">
-              <Button variant="secondary"><FaPowerOff /></Button> <Button variant="secondary"><FaBurn /></Button>
-            </Card.Footer>
-          </Card>
-        </Col>
-      );
-    }
-
-    virtual_items.push(<div><Row className="show-grid">{items}</Row><br /></div>)
-  }
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar fill justify bg="primary" variant="dark">
-          <Container>
-            <Nav>
-              <Nav.Item>
-                <Nav.Link href="#"> Dashboard </Nav.Link>
-              </Nav.Item>
-
-              <Nav.Item>
-                <Nav.Link href="#"> Metrics </Nav.Link>
-              </Nav.Item>
-
-              <Nav.Item>
-                <Nav.Link href="#"> Storage </Nav.Link>
-              </Nav.Item>
-            </Nav>
-          </Container>
-        </Navbar>
-      </header>
-      <body>
-
-        <Container  >
-          <br />
-          <h1> Dashboard <FaReact /></h1>
-          <br />
-
-          <Card>
-            <Card.Header><h2>Physicals edges</h2></Card.Header>
-            <Card.Body>
-              {physical_items}
-            </Card.Body>
-          </Card>
-          <br />
-          <Card>
-            <Card.Header><h2>Virtual edges</h2></Card.Header>
-            <Card.Body>
-              {virtual_items}
-            </Card.Body>
-          </Card>
-        </Container>
-
-      </body>
-    </div>
-  );
 }
-
-export default App;
