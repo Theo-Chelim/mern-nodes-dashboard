@@ -1,9 +1,8 @@
 import React from "react";
 
-import Box from "@material-ui/core/Box";
+import { Box, Grid, Card } from "@material-ui/core";
 
-import architecture_image from "./architecture.jpg";
-import { Grid, Card } from "@material-ui/core";
+import architecture_image from "../images/architecture.jpg";
 
 export default function Architecture() {
   return (
