@@ -5,7 +5,7 @@ import Box from "@material-ui/core/Box";
 export default function SecureStorage() {
   return (
     <Box>
-      <h1> SecureStorage </h1>
+      <h1> Secure Storage Page </h1>
       {[...new Array(160)]
         .map(
           () => `Cras mattis consectetur purus sit amet fermentum.
