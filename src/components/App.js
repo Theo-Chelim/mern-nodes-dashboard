@@ -168,7 +168,7 @@ export default function App() {
               <Dashboard />
             </Route>
             <Route path="/secure_storage">
-              <Terminal />
+              <SecureStorage />
             </Route>
             <Route path="/orchestration">
               <Orchestration />
