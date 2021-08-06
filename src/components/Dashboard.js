@@ -33,12 +33,11 @@ export default class Dashboard extends Component {
 
   openTerminal = () => {
     this.setState({ open: true });
-  }
+  };
 
   closeTerminal = () => {
     this.setState({ open: false });
-  }
-
+  };
 
   render() {
     return (
@@ -101,7 +100,7 @@ class EdgeCard extends Component {
   }
 
   getData = () => {
-    fetch("http://localhost:9000/api/available/" + this.props.identifier)
+    fetch("http://192.168.26.1:9000/api/available/" + this.props.identifier)
       .then((res) => res.json())
       .then(
         (result) => {
