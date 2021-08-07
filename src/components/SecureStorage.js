@@ -147,7 +147,9 @@ export default class SecureStorage extends Component {
                       {this.state.selectedFile === null
                         ? "Choose file"
                         : this.state.selectedFile.name.substring(0, 20) +
-                              (this.state.selectedFile.name.length >= 20 ? "..." : "")}
+                          (this.state.selectedFile.name.length >= 20
+                            ? "..."
+                            : "")}
                     </Button>
                   </Grid>
                   <Grid item md={2}>
@@ -172,7 +174,8 @@ export default class SecureStorage extends Component {
                     </InputLabel>
                     <Select value={1} labelId="algo">
                       <MenuItem value={1}>Random</MenuItem>
-                      <MenuItem value={2}>Bestfit</MenuItem>
+                      <MenuItem value={2}>Bestfit CPU</MenuItem>
+                      <MenuItem value={3}>Bestfit Storage</MenuItem>
                     </Select>
                   </Grid>
                   <Grid item md={2}>
