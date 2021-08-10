@@ -1,12 +1,13 @@
 {
   "name": "edges-dashboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "A dashboard to monitor IONet edges",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server"
+    "dev": "nodemon server",
+    "start": "node server"
   },
-  "author": "",
+  "author": "Théo CHELIM",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

@@ -8,7 +8,7 @@ const pty = require("node-pty");
 const splitFile = require("split-file");
 const mongoose = require("mongoose");
 
-const dss = require("./secure_storage");
+const dss = require("./utils/secure_storage");
 
 const FileModel = require("./models/file.model");
 
