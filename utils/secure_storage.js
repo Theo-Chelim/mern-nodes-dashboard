@@ -2,7 +2,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const child_process = require("child_process");
 
-const iv = Buffer.from("4f11b3b8e34a29f433c3b1038b041b1d", "hex");
+const iv = Buffer.from(process.env.DEFAULT_IV, "hex");
 
 exports.cipher_file_AES256 = (input_file, output_file, key) => {
   data = fs.readFileSync(input_file);
@@ -19,18 +19,6 @@ exports.decipher_file_AES256 = (input_file, output_file, key) => {
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   fs.writeFileSync(output_file, decrypted);
 };
-
-/* cipher_file_AES256("upload/avatar.jpg", "upload/avatar.jpg.ciphered", key);
-decipher_file_AES256("upload/avatar.jpg.ciphered", "upload/avatar2.jpg", key); */
-/* 
-splitFile
-  .splitFile("upload/avatar.jpg.ciphered", 3)
-  .then((names) => {
-    console.log(names);
-  })
-  .catch((err) => {
-    console.log("Error: ", err);
-  }); */
 
 exports.get_cpu_usage = (edge) => {
   child_process.exec(
