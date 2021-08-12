@@ -18,25 +18,25 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file");
 
-app.get("/api/files", async (req, res) => {
+module.allFiles = async (req, res) => {
   await FileModel.find((err, docs) => {
     if (err) {
       console.log(err);
       res.status(500).json(err);
     } else res.status(200).json(docs);
   });
-});
+};
 
-app.get("/api/file/:id/infos", async (req, res) => {
+module.getInfos = async (req, res) => {
   await FileModel.findById(req.params.id, (err, doc) => {
     if (err) {
       console.log(err);
       res.status(500).json(err);
     } else res.status(200).json(doc);
   });
-});
+};
 
-app.post("/api/file", async (req, res) => {
+module.addFile = async (req, res) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
@@ -88,4 +88,4 @@ app.post("/api/file", async (req, res) => {
 
     return res.status(200).send(req.file);
   });
-});
+};
