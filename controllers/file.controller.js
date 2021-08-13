@@ -1,9 +1,9 @@
 const multer = require("multer");
 const splitFile = require("split-file");
 
-const FileModel = require("./models/file.model");
+const FileModel = require("../models/file.model");
 
-const dss = require("./utils/secure_storage");
+const dss = require("../utils/secure_storage");
 
 const key = Buffer.from(process.env.DEFAULT_KEY, "hex");
 
@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file");
 
-module.allFiles = async (req, res) => {
+module.exports.allFiles = async (req, res) => {
   await FileModel.find((err, docs) => {
     if (err) {
       console.log(err);
@@ -27,7 +27,7 @@ module.allFiles = async (req, res) => {
   });
 };
 
-module.getInfos = async (req, res) => {
+module.exports.getInfos = async (req, res) => {
   await FileModel.findById(req.params.id, (err, doc) => {
     if (err) {
       console.log(err);
@@ -36,7 +36,7 @@ module.getInfos = async (req, res) => {
   });
 };
 
-module.addFile = async (req, res) => {
+module.exports.addFile = async (req, res) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
