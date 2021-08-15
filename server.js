@@ -5,7 +5,7 @@ const http = require("http");
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
 
-const edgesRoutes = require("./routes/edges.routes");
+const edgesRoutes = require("./routes/edge.routes");
 const fileRoutes = require("./routes/file.routes");
 
 const app = express();

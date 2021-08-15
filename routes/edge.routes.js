@@ -1,17 +1,17 @@
 const router = require("express").Router();
-const edges = require("../controllers/edges.controller");
+const edge = require("../controllers/edge.controller");
 
 // Edges routes
-router.get("/", edges.allEdges);
-router.put("/", edges.updateConfig);
+router.get("/", edge.allEdges);
+router.put("/", edge.updateConfig);
 
-router.post("/:id/start", edges.start);
-router.post("/:id/stop", edges.stop);
-router.post("/:id/reboot", edges.reboot);
-router.post("/:id/stress", edges.stress);
+router.post("/:id/start", edge.start);
+router.post("/:id/stop", edge.stop);
+router.post("/:id/reboot", edge.reboot);
+router.post("/:id/stress", edge.stress);
 
-router.get("/:id/availability", edges.getAvailability);
-router.get("/:id/cpu_usage", edges.getCpuUsage);
-router.get("/:id/storage_usage", edges.getStorageUsage);
+router.get("/:id/availability", edge.getAvailability);
+router.get("/:id/cpu_usage", edge.getCpuUsage);
+router.get("/:id/storage_usage", edge.getStorageUsage);
 
 module.exports = router;
