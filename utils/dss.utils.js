@@ -2,6 +2,8 @@ const fs = require("fs");
 const crypto = require("crypto");
 const child_process = require("child_process");
 
+const edgeUtils = require("./edge.utils");
+
 const iv = Buffer.from(process.env.DEFAULT_IV, "hex");
 
 exports.cipher_file_AES256 = (input_file, output_file, key) => {
@@ -25,8 +27,8 @@ exports.random_optimization = (chunks, edges) => {
 
   available_edges = [];
   edges.forEach((edge) => {
-    //if (get_available_storage(edge) > 5 * 1000 * 1000) {
-    available_edges.push(edge);
+    //if (edgesUtils.get_available_storage(edge) > 5 * 1000 * 1000) {
+    edgeUtils.available_edges.push(edge);
     //}
   });
 

@@ -27,8 +27,8 @@ app.use(
   })
 );
 
-app.use("/api/edge/", edgesRoutes);
-app.use("/api/file/", fileRoutes);
+app.use("/api/edge", edgesRoutes);
+app.use("/api/file", fileRoutes);
 
 const server = http.createServer(app);
 

@@ -100,7 +100,10 @@ class EdgeCard extends Component {
   }
 
   getData = () => {
-    fetch("http://192.168.26.1:9000/api/available/" + this.props.identifier)
+    fetch(
+      process.env.REACT_APP_BASE_URL +
+        "/api/edge/" + this.props.identifier + "/availability" 
+    )
       .then((res) => res.json())
       .then(
         (result) => {
