@@ -3,11 +3,7 @@ const splitFile = require("split-file");
 
 const FileModel = require("../models/file.model");
 
-<<<<<<< HEAD
 const dss = require("../utils/dss.utils");
-=======
-const dss = require("../utils/secure_storage");
->>>>>>> bf35cc804fc77d2a66795201b6e678797d64eede
 
 const key = Buffer.from(process.env.DEFAULT_KEY, "hex");
 
