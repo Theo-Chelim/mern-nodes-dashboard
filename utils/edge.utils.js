@@ -7,8 +7,7 @@ exports.get_availability = async (edge) => {
     timeout: 1,
     //extra: ["-c", "2"],
   };
-  var status = await ping.promise.probe(host, cfg);
-  return status.alive;
+  return await ping.promise.probe(host, cfg).alive;
 };
 
 exports.get_cpu_usage = (edge) => {
