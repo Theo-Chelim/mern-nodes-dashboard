@@ -11,6 +11,7 @@ const fileRoutes = require("./routes/file.routes");
 const app = express();
 
 const PORT = process.env.PORT || 9000;
+const BASE_PATH = "/api/";
 
 app.use(
   cors({
@@ -27,8 +28,8 @@ app.use(
   })
 );
 
-app.use("/api/edge", edgesRoutes);
-app.use("/api/file", fileRoutes);
+app.use(BASE_PATH + "edge", edgesRoutes);
+app.use(BASE_PATH + "file", fileRoutes);
 
 const server = http.createServer(app);
 
