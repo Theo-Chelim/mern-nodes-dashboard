@@ -11,7 +11,7 @@ const fileRoutes = require("./routes/file.routes");
 const app = express();
 
 const PORT = process.env.PORT || 9000;
-const BASE_PATH = "/api/";
+const BASE_PATH = process.env.BASE_PATH_API;
 
 app.use(
   cors({
