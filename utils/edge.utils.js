@@ -1,6 +1,10 @@
 const ping = require("ping");
 const child_process = require("child_process");
 
+exports.get_host = (edge) => {
+  return "Edge" + edge;
+};
+
 exports.get_availability = async (edge) => {
   const host = edge;
   const cfg = {
