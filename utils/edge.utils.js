@@ -5,6 +5,10 @@ exports.get_host = (edge) => {
   return "Edge" + edge;
 };
 
+exports.get_ip_address = (edge) => {
+  return "172.16.100." + edge;
+};
+
 exports.get_availability = async (edge) => {
   const host = edge;
   const cfg = {
