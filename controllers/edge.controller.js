@@ -25,19 +25,16 @@ module.exports.reboot = (req, res) => {};
 module.exports.stress = (req, res) => {};
 
 module.exports.getAvailability = async (req, res) => {
-  var host = "172.16.100." + req.params.id;
-  const available = await edgeUtils.get_availability(host);
+  const available = await edgeUtils.get_availability(req.params.id);
   res.status(200).json({ available });
 };
 
 module.exports.getCpuUsage = async (req, res) => {
-  const host = "172.16.100." + req.param.id;
-  const cpu = await edgeUtils.get_cpu_usage(host);
+  const cpu = await edgeUtils.get_cpu_usage(req.params.id);
   res.status(200).json({ cpu });
 };
 
 module.exports.getStorageUsage = async (req, res) => {
-  const host = "172.16.100." + req.param.id;
-  const storage = await edgeUtils.get_available_storage(host);
+  const storage = await edgeUtils.get_available_storage(req.params.id);
   res.status(200).json({ storage });
 };
