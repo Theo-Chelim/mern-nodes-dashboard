@@ -15,7 +15,16 @@ module.exports.allEdges = async (req, res) => {
 
 module.exports.updateConfig = (req, res) => {
   console.log(req.body);
-  const example = []
+  const example = [
+    {
+      name: "Edge1",
+      arch: "arm64",
+      machine: "virt",
+      cpu: "cortex-a59",
+      smp: 2,
+      memory: 256
+    }
+  ]
   res.status(200).json({});
 };
 

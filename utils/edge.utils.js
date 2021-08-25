@@ -46,3 +46,11 @@ exports.get_available_storage = (edge) => {
     return 0;
   }
 };
+
+exports.verify_smp_limit = (edges) => {
+  return true;
+};
+
+exports.verify_memory_limit = (edges) => {
+  return true;
+};
