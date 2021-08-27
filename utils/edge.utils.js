@@ -48,7 +48,11 @@ exports.get_available_storage = (edge) => {
 };
 
 exports.verify_smp_limit = (edges) => {
-  return true;
+  let smp = 0;
+  edges.forEach((edge) => {
+    smp += edge.smp;
+  });
+  return smp <= process.env.VIRTUAL_EDGES_MAX_SMP;
 };
 
 exports.verify_memory_limit = (edges) => {
