@@ -22,9 +22,13 @@ module.exports.updateConfig = (req, res) => {
       machine: "virt",
       cpu: "cortex-a59",
       smp: 2,
-      memory: 256
-    }
-  ]
+      memory: 256,
+    },
+  ];
+  if (!verify_smp_limit(example)) {
+  } else if (!verify_memory_limit(example)) {
+  } else {
+  }
   res.status(200).json({});
 };
 
