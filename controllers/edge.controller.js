@@ -28,6 +28,9 @@ module.exports.updateConfig = (req, res) => {
   if (!verify_smp_limit(example)) {
   } else if (!verify_memory_limit(example)) {
   } else {
+    example.forEach(edge => {
+      
+    });
   }
   res.status(200).json({});
 };
