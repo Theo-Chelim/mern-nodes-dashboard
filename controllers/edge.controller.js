@@ -31,8 +31,9 @@ module.exports.updateConfig = (req, res) => {
     example.forEach(edge => {
       
     });
+    res.status(200).json({});
   }
-  res.status(200).json({});
+  
 };
 
 module.exports.start = (req, res) => {};
