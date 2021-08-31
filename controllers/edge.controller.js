@@ -37,8 +37,11 @@ module.exports.updateConfig = (req, res) => {
 };
 
 module.exports.start = (req, res) => {};
+
 module.exports.stop = (req, res) => {};
+
 module.exports.reboot = (req, res) => {};
+
 module.exports.stress = (req, res) => {};
 
 module.exports.getAvailability = async (req, res) => {
