@@ -36,7 +36,11 @@ module.exports.updateConfig = (req, res) => {
   
 };
 
-module.exports.start = (req, res) => {};
+module.exports.start = (req, res) => {
+  // Get information of edge from database
+  // Verify if edge.pid exist 
+  // Exec bash command to start qemu
+};
 
 module.exports.stop = (req, res) => {};
 
