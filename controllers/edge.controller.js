@@ -42,7 +42,10 @@ module.exports.start = (req, res) => {
   // Exec bash command to start qemu
 };
 
-module.exports.stop = (req, res) => {};
+module.exports.stop = (req, res) => {
+  // Verify if edge.pid exist
+  // Exec kill command
+};
 
 module.exports.reboot = (req, res) => {};
 
