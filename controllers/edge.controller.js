@@ -47,7 +47,10 @@ module.exports.stop = (req, res) => {
   // Exec kill command
 };
 
-module.exports.reboot = (req, res) => {};
+module.exports.reboot = (req, res) => {
+  // stop
+  // start
+};
 
 module.exports.stress = (req, res) => {};
 
