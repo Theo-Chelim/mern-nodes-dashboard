@@ -48,8 +48,8 @@ module.exports.stop = (req, res) => {
 };
 
 module.exports.reboot = (req, res) => {
-  // stop edge
-  // start edge
+  // stop edge command
+  // start edge command
 };
 
 module.exports.stress = (req, res) => {};
