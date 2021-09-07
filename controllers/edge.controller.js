@@ -50,6 +50,7 @@ module.exports.stop = (req, res) => {
 module.exports.reboot = (req, res) => {
   // stop edge bash command
   // start edge bash command
+  // On edge utils
 };
 
 module.exports.stress = (req, res) => {};
