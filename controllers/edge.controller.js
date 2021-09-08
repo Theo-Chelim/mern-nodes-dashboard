@@ -21,7 +21,7 @@ module.exports.updateConfig = (req, res) => {
       arch: "arm64",
       machine: "virt",
       cpu: "cortex-a59",
-      smp: 2,
+      smp: 1,
       memory: 256,
     },
   ];
