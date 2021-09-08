@@ -17,7 +17,7 @@ module.exports.updateConfig = (req, res) => {
   console.log(req.body);
   const example = [
     {
-      name: "Edge1",
+      name: "Edge 1",
       arch: "arm64",
       machine: "virt",
       cpu: "cortex-a59",
