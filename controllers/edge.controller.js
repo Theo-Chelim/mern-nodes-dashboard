@@ -20,7 +20,7 @@ module.exports.updateConfig = (req, res) => {
       name: "Edge 1",
       arch: "arm64",
       machine: "virt",
-      cpu: "cortex-a59",
+      cpu: "cortex-a57",
       smp: 1,
       memory: 256,
     },
