@@ -2,11 +2,10 @@ const mongoose = require("mongoose");
 
 const edgeSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
+    id: {
+      type: Number,
       required: true,
       unique: true,
-      trim: true,
     },
     arch: {
       type: String,

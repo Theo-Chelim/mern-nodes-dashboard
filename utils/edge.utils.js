@@ -62,3 +62,26 @@ exports.verify_memory_limit = (edges) => {
   });
   return memory <= process.env.VIRTUAL_EDGES_MAX_MEMORY;
 };
+
+exports.start_qemu_edge = (id, machine, arch, cpu, smp, memory) => {
+  let qemu_binary;
+  const mac = "00:00:00:00:00:12";
+
+  switch (arch) {
+    case "arm64":
+      qemu_binary = "qemu-system-aarch64";
+      break;
+  
+    default:
+      return -1;
+  }
+  const ret = child_process.execSync(`${qemu_binary} -machine ${machine} -cpu ${cpu} -smp ${smp} -m ${memory} -nographic 
+                    -kernel /srv/edges/qemu/${arch}/kernel.bin -append "rootwait root=/dev/vda console=ttyAMA0" 
+                    -initrd /srv/edges/qemu/${arch}/rootfs.cpio.gz 
+                    -netdev tap,ifname=edge${id},id=edge${id},script=/srv/edges/scripts/qemu-ifup \
+                    -device virtio-net-pci,mac=${mac},netdev=edge${id}
+                    & `);
+
+  console.log(ret.toString());
+  return ret;
+}

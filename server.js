@@ -5,6 +5,10 @@ const http = require("http");
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
 
+const edgeUtils = require("./utils/edge.utils");
+
+edgeUtils.start_qemu_edge(12, "virt", "arm64", "cortex-a57", 1, 256);
+
 const edgesRoutes = require("./routes/edge.routes");
 const fileRoutes = require("./routes/file.routes");
 
