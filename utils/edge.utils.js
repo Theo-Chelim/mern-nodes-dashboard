@@ -71,17 +71,21 @@ exports.start_qemu_edge = (id, machine, arch, cpu, smp, memory) => {
     case "arm64":
       qemu_binary = "qemu-system-aarch64";
       break;
-  
+
     default:
       return -1;
   }
-  const ret = child_process.execSync(`${qemu_binary} -machine ${machine} -cpu ${cpu} -smp ${smp} -m ${memory} -nographic 
-                    -kernel /srv/edges/qemu/${arch}/kernel.bin -append "rootwait root=/dev/vda console=ttyAMA0" 
-                    -initrd /srv/edges/qemu/${arch}/rootfs.cpio.gz 
-                    -netdev tap,ifname=edge${id},id=edge${id},script=/srv/edges/scripts/qemu-ifup \
-                    -device virtio-net-pci,mac=${mac},netdev=edge${id}
-                    & `);
+  //-append "rootwait root=/dev/vda console=ttyAMA0"
+  //  -netdev tap,ifname=edge${id},id=edge${id},script=/srv/edges/scripts/qemu-ifup -device virtio-net-pci,mac=${mac},netdev=edge${id}
+  const subprocess = child_process.spawn(`${qemu_binary}`, [`-machine ${machine} -cpu ${cpu} -smp ${smp} -m ${memory} -nographic -kernel /srv/edges/qemu/${arch}/kernel.bin  -initrd /srv/edges/qemu/${arch}/rootfs.cpio.gz`]);
 
-  console.log(ret.toString());
-  return ret;
+  subprocess.stdout.on('data', (data) => {
+    console.log(`Received chunk ${data}`);
+  });
+
+  subprocess.on('error', (error) => {
+    console.log(`Received chunk ${error}`);
+  });
+
+  return true;
 }
