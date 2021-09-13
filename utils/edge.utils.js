@@ -1,3 +1,4 @@
+const fs = require("fs");
 const ping = require("ping");
 const child_process = require("child_process");
 
@@ -10,13 +11,14 @@ exports.get_ip_address = (edge) => {
 };
 
 exports.get_availability = async (edge) => {
-  const ip = get_ip_address(edge);
+  const ip = exports.get_ip_address(edge);
   const cfg = { timeout: 1 };
-  return await ping.promise.probe(ip, cfg).alive;
+  const status = await ping.promise.probe(ip, cfg);
+  return status.alive;
 };
 
 exports.get_cpu_usage = (edge) => {
-  const host = get_host(edge);
+  const host = exports.get_host(edge);
   child_process.exec(
     "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'",
     (error, stdout, stderr) => {
@@ -64,28 +66,24 @@ exports.verify_memory_limit = (edges) => {
 };
 
 exports.start_qemu_edge = (id, machine, arch, cpu, smp, memory) => {
-  let qemu_binary;
-  const mac = "00:00:00:00:00:12";
-
-  switch (arch) {
-    case "arm64":
-      qemu_binary = "qemu-system-aarch64";
-      break;
-
-    default:
-      return -1;
+  if (arch === "arm64") {
+    return child_process.exec(
+      `python /srv/edges/scripts/start_arm64_edge.py ${id} ${machine} ${cpu} ${smp} ${memory}`
+    );
   }
-  //-append "rootwait root=/dev/vda console=ttyAMA0"
-  //  -netdev tap,ifname=edge${id},id=edge${id},script=/srv/edges/scripts/qemu-ifup -device virtio-net-pci,mac=${mac},netdev=edge${id}
-  const subprocess = child_process.spawn(`${qemu_binary}`, [`-machine ${machine} -cpu ${cpu} -smp ${smp} -m ${memory} -nographic -kernel /srv/edges/qemu/${arch}/kernel.bin  -initrd /srv/edges/qemu/${arch}/rootfs.cpio.gz`]);
+};
 
-  subprocess.stdout.on('data', (data) => {
-    console.log(`Received chunk ${data}`);
-  });
+exports.stop_qemu_edge = (id) => {
+  return child_process.exec(`python /srv/edges/scripts/stop_edge.py ${id}`);
+};
 
-  subprocess.on('error', (error) => {
-    console.log(`Received chunk ${error}`);
-  });
-
-  return true;
-}
+exports.status_qemu_edge = (id) => {
+  const path = `/var/run/edge-${id}.pid`;
+  try {
+    if (fs.existsSync(path)) {
+      return true
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};

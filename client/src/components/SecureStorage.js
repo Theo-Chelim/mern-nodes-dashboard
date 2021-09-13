@@ -39,7 +39,7 @@ export default class SecureStorage extends Component {
   }
 
   getAllFiles = () => {
-    axios.get("http://192.168.26.1:9000/api/files", {}).then((res) => {
+    axios.get("http://192.168.26.1:9000/api/file", {}).then((res) => {
       this.setState({
         myfiles: [],
       });

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import axios from "axios";
+
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -28,8 +30,27 @@ export default class Dashboard extends Component {
     this.openTerminal = this.openTerminal.bind(this);
     this.state = {
       open: false,
+      edges: [],
     };
   }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({ edges: result });
+          console.log(this.state.edges);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
 
   openTerminal = () => {
     this.setState({ open: true });
@@ -72,8 +93,15 @@ export default class Dashboard extends Component {
         <Divider />
         <h2 className="fontTitle"> Virtual edges </h2>
         <Grid container spacing={2}>
-          {[...new Array(100)].map((_, key) => (
-            <EdgeCard key={key + 11} identifier={key + 11} />
+          {this.state.edges.map((edge, key) => (
+            <EdgeCard
+              key={edge.id}
+              identifier={edge.id}
+              arch={edge.arch}
+              cpu={edge.cpu}
+              core={edge.smp}
+              memory={edge.memory}
+            />
           ))}
         </Grid>
       </Box>
@@ -100,9 +128,17 @@ class EdgeCard extends Component {
   }
 
   getData = () => {
+    console.log(
+      process.env.REACT_APP_BASE_URL +
+        "/api/edge/" +
+        this.props.identifier +
+        "/availability"
+    );
     fetch(
       process.env.REACT_APP_BASE_URL +
-        "/api/edge/" + this.props.identifier + "/availability" 
+        "/api/edge/" +
+        this.props.identifier +
+        "/availability"
     )
       .then((res) => res.json())
       .then(
@@ -118,6 +154,19 @@ class EdgeCard extends Component {
 
   handleTerminal = () => {};
 
+  handlePowerOff = (id) => {
+    axios
+      .post(
+        process.env.REACT_APP_BASE_URL +
+          "/api/edge/" +
+          this.props.identifier +
+          "/stop"
+      )
+      .then((res) => {
+        console.log(res.statusText);
+      });
+  };
+
   render() {
     return (
       <Grid item xs={12} sm={6} md={2}>
@@ -128,7 +177,15 @@ class EdgeCard extends Component {
             </Typography>
             <Typography color="textSecondary">
               172.16.100.{this.props.identifier}
-            </Typography>
+            </Typography>{" "}
+            {this.props.arch ? (
+              <Typography color="textSecondary" variant="subtitle2">
+                {this.props.arch} / {this.props.core} {this.props.cpu} /{" "}
+                {this.props.memory}mb memory
+              </Typography>
+            ) : (
+              ""
+            )}
             <br />
             <Grid container justifyContent="center" spacing={1}>
               {this.state.available === null ? (
@@ -155,26 +212,26 @@ class EdgeCard extends Component {
               )}
             </Grid>
           </CardContent>
-          {this.state.available ? (
-            <CardActions disableSpacing>
-              <IconButton aria-label="Power off">
-                <IoIosPower />
+
+          <CardActions disableSpacing>
+            <IconButton
+              aria-label="Power off"
+              onClick={() => this.handlePowerOff(this.props.identifier)}
+            >
+              <IoIosPower />
+            </IconButton>
+            <IconButton aria-label="Stress">
+              <IoIosFlash />
+            </IconButton>
+            <IconButton aria-label="Login" onClick={this.props.openTerminal}>
+              <IoIosLogIn />
+            </IconButton>
+            <Grid container justifyContent="flex-end">
+              <IconButton aria-label="show more">
+                <ExpandMoreIcon />
               </IconButton>
-              <IconButton aria-label="Stress">
-                <IoIosFlash />
-              </IconButton>
-              <IconButton aria-label="Login" onClick={this.props.openTerminal}>
-                <IoIosLogIn />
-              </IconButton>
-              <Grid container justifyContent="flex-end">
-                <IconButton aria-label="show more">
-                  <ExpandMoreIcon />
-                </IconButton>
-              </Grid>
-            </CardActions>
-          ) : (
-            ""
-          )}
+            </Grid>
+          </CardActions>
         </Card>
       </Grid>
     );

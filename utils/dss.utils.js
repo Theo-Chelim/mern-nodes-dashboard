@@ -28,7 +28,7 @@ exports.random_optimization = (chunks, edges) => {
   available_edges = [];
   edges.forEach((edge) => {
     //if (edgesUtils.get_available_storage(edge) > 5 * 1000 * 1000) {
-    edgeUtils.available_edges.push(edge);
+    available_edges.push(edge);
     //}
   });
 
