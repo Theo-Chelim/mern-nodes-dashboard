@@ -11,6 +11,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { red, orange, green } from "@material-ui/core/colors";
 
@@ -19,6 +21,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import DataUsageIcon from "@material-ui/icons/DataUsage";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 import { IoIosPower, IoIosFlash, IoIosLogIn } from "react-icons/io";
 
@@ -91,7 +94,18 @@ export default class Dashboard extends Component {
         </Grid>
         <br /> <br />
         <Divider />
-        <h2 className="fontTitle"> Virtual edges </h2>
+        <h2 className="fontTitle">
+          Virtual edges
+          <Tooltip
+            title="IOT network configuration"
+            placement="right"
+            aria-label="config"
+          >
+            <IconButton aria-label="config">
+              <SettingsIcon />
+            </IconButton>
+          </Tooltip>
+        </h2>
         <Grid container spacing={2}>
           {this.state.edges.map((edge, key) => (
             <EdgeCard
@@ -211,21 +225,69 @@ class EdgeCard extends Component {
                 />
               )}
             </Grid>
+            {this.state.available ? (
+              <Grid container justifyContent="center" spacing={1}>
+                <br />
+                <div style={{ width: "70%" }}>
+                  <Box display="flex" alignItems="center">
+                    <Box minWidth={70}>
+                      <Typography variant="body2" color="textSecondary">
+                        <i>CPU</i>
+                      </Typography>
+                    </Box>
+                    <Box width="100%" mr={1}>
+                      <LinearProgress
+                        color="primary"
+                        variant="determinate"
+                        value="12"
+                      />
+                    </Box>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    <Box minWidth={70}>
+                      <Typography variant="body2" color="textSecondary">
+                        <i> Memory </i>
+                      </Typography>
+                    </Box>
+                    <Box width="100%" mr={1}>
+                      <LinearProgress
+                        color="primary"
+                        variant="determinate"
+                        value="12"
+                      />
+                    </Box>
+                  </Box>
+                </div>
+              </Grid>
+            ) : (
+              ""
+            )}
           </CardContent>
 
           <CardActions disableSpacing>
-            <IconButton
+            <Tooltip
+              title="Power off"
+              placement="right"
               aria-label="Power off"
-              onClick={() => this.handlePowerOff(this.props.identifier)}
             >
-              <IoIosPower />
-            </IconButton>
-            <IconButton aria-label="Stress">
-              <IoIosFlash />
-            </IconButton>
-            <IconButton aria-label="Login" onClick={this.props.openTerminal}>
-              <IoIosLogIn />
-            </IconButton>
+              <IconButton
+                aria-label="Power off"
+                onClick={() => this.handlePowerOff(this.props.identifier)}
+              >
+                <IoIosPower />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Stress" placement="right" aria-label="Stress">
+              <IconButton aria-label="Stress">
+                <IoIosFlash />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="SSH login" placement="right" aria-label="Login">
+              <IconButton aria-label="Login" onClick={this.props.openTerminal}>
+                <IoIosLogIn />
+              </IconButton>
+            </Tooltip>
+
             <Grid container justifyContent="flex-end">
               <IconButton aria-label="show more">
                 <ExpandMoreIcon />
