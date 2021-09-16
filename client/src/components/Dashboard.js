@@ -265,11 +265,7 @@ class EdgeCard extends Component {
           </CardContent>
 
           <CardActions disableSpacing>
-            <Tooltip
-              title="Power off"
-              placement="right"
-              aria-label="Power off"
-            >
+            <Tooltip title="Power off" placement="right" aria-label="Power off">
               <IconButton
                 aria-label="Power off"
                 onClick={() => this.handlePowerOff(this.props.identifier)}
