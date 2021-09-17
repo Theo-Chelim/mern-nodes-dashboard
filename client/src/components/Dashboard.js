@@ -278,8 +278,8 @@ class EdgeCard extends Component {
                 <IoIosFlash />
               </IconButton>
             </Tooltip>
-            <Tooltip title="SSH login" placement="right" aria-label="Login">
-              <IconButton aria-label="Login" onClick={this.props.openTerminal}>
+            <Tooltip title="SSH login" placement="right" aria-label="login">
+              <IconButton aria-label="login" onClick={this.props.openTerminal}>
                 <IoIosLogIn />
               </IconButton>
             </Tooltip>
