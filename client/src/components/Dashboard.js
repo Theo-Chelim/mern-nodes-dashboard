@@ -273,8 +273,8 @@ class EdgeCard extends Component {
                 <IoIosPower />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Stress" placement="right" aria-label="Stress">
-              <IconButton aria-label="Stress">
+            <Tooltip title="Stress" placement="right" aria-label="stress">
+              <IconButton aria-label="stress">
                 <IoIosFlash />
               </IconButton>
             </Tooltip>
