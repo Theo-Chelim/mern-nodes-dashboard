@@ -239,7 +239,7 @@ class EdgeCard extends Component {
                       <LinearProgress
                         color="primary"
                         variant="determinate"
-                        value="12"
+                        value="50"
                       />
                     </Box>
                   </Box>
