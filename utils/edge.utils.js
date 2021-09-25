@@ -19,7 +19,7 @@ exports.get_availability = async (edge) => {
 
 exports.get_cpu_usage = (edge) => {
   const host = exports.get_host(edge);
-  // TODO: Test SSH commands
+  // TODO: Test SSH commands on edges virtual
   child_process.exec(
     "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'",
     (error, stdout, stderr) => {
