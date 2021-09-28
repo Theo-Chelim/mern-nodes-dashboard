@@ -12,27 +12,32 @@ exports.get_ip_address = (edge) => {
 
 exports.get_availability = async (edge) => {
   const ip = exports.get_ip_address(edge);
-  const cfg = { timeout: 1 };
-  const status = await ping.promise.probe(ip, cfg);
-  return status.alive;
+  if(parseInt(edge) >= 1 && parseInt(edge) <= 10) {
+    
+  } else {
+    const cfg = { timeout: 1 };
+    const status = await ping.promise.probe(ip, cfg);
+    return status.alive;
+
+  }
 };
 
-exports.get_cpu_usage = (edge) => {
+exports.get_cpu_usage = async (edge) => {
   const host = exports.get_host(edge);
-  // TODO: Test SSH commands on virtual edges 
-  child_process.exec(
-    "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'",
-    (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return null;
-      }
-      if (stderr) {
-        return null;
-      }
-      return stdout.substring(0, 3);
-    }
-  );
+  const ip = exports.get_ip_address(edge);
+  let command;
+
+  if (false) {
+    command = "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
+  } else {
+    command = "ssh -o \"StrictHostKeyChecking=no\" " + ip + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
+  }
+  try {
+    const result = child_process.execSync(command).toString();
+    return parseInt(result);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 exports.get_available_storage = (edge) => {
@@ -82,7 +87,7 @@ exports.status_qemu_edge = (id) => {
   const path = `/var/run/edge-${id}.pid`;
   try {
     if (fs.existsSync(path)) {
-      return true
+      return true;
     }
   } catch (err) {
     console.error(err);
