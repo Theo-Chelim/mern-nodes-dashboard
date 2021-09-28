@@ -130,24 +130,44 @@ class EdgeCard extends Component {
     super(props);
     this.state = {
       available: null,
+      cpu: 100,
+      memory: 50,
     };
   }
 
   componentDidMount() {
-    this.getData();
+    this.getAvailability();
+    this.getCpu();
   }
 
   componentWillUnmount() {
     clearTimeout(this.intervalID);
   }
 
-  getData = () => {
-    console.log(
+  getCpu = () => {
+    fetch(
       process.env.REACT_APP_BASE_URL +
         "/api/edge/" +
         this.props.identifier +
-        "/availability"
-    );
+        "/cpu_usage"
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({ cpu: result.cpu });
+        },
+        (error) => {
+          this.setState({ cpu: 100 });
+        }
+      );
+    this.intervalID = setTimeout(this.getCpu.bind(this), 5000);
+  };
+
+  getMemory = () => {
+
+  }
+
+  getAvailability = () => {
     fetch(
       process.env.REACT_APP_BASE_URL +
         "/api/edge/" +
@@ -163,7 +183,7 @@ class EdgeCard extends Component {
           this.setState({ available: false });
         }
       );
-    this.intervalID = setTimeout(this.getData.bind(this), 5000);
+    this.intervalID = setTimeout(this.getAvailability.bind(this), 5000);
   };
 
   handleTerminal = () => {};
@@ -198,7 +218,9 @@ class EdgeCard extends Component {
                 {this.props.memory}mb memory
               </Typography>
             ) : (
-              ""
+              <Typography color="textSecondary" variant="subtitle2">
+                Raspberry Pi 4
+              </Typography>
             )}
             <br />
             <Grid container justifyContent="center" spacing={1}>
@@ -227,8 +249,12 @@ class EdgeCard extends Component {
             </Grid>
             {this.state.available ? (
               <Grid container justifyContent="center" spacing={1}>
-                <br />
                 <div style={{ width: "70%" }}>
+                  <br />
+                </div>
+
+                <br />
+                <div style={{ width: "80%" }}>
                   <Box display="flex" alignItems="center">
                     <Box minWidth={70}>
                       <Typography variant="body2" color="textSecondary">
@@ -239,8 +265,13 @@ class EdgeCard extends Component {
                       <LinearProgress
                         color="primary"
                         variant="determinate"
-                        value="50"
+                        value={this.state.cpu}
                       />
+                    </Box>
+                    <Box width="100%" mr={1}>
+                      <Typography variant="body2" color="textSecondary">
+                      {this.state.cpu} % 
+                      </Typography>
                     </Box>
                   </Box>
                   <Box display="flex" alignItems="center">

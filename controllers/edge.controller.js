@@ -87,7 +87,7 @@ module.exports.stop = async (req, res) => {
     } else {
       if (doc) {
         const status = await edgeUtils.status_qemu_edge(req.params.id);
-$        if (status) {
+        if (status) {
           const ret = edgeUtils.stop_qemu_edge(req.params.id);
           res.status(200).json();
         } else {
