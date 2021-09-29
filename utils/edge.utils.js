@@ -13,7 +13,7 @@ exports.get_ip_address = (edge) => {
 exports.get_availability = async (edge) => {
   const ip = exports.get_ip_address(edge);
   if(parseInt(edge) >= 1 && parseInt(edge) <= 10) {
-    
+    // Test ssh command 
   } else {
     const cfg = { timeout: 1 };
     const status = await ping.promise.probe(ip, cfg);
