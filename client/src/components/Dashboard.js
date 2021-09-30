@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -96,15 +98,20 @@ export default class Dashboard extends Component {
         <Divider />
         <h2 className="fontTitle">
           Virtual edges
-          <Tooltip
-            title="IOT network configuration"
-            placement="right"
-            aria-label="config"
+          <Link
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/configNetwork"
           >
-            <IconButton aria-label="config">
-              <SettingsIcon />
-            </IconButton>
-          </Tooltip>
+            <Tooltip
+              title="IOT network configuration"
+              placement="right"
+              aria-label="config"
+            >
+              <IconButton aria-label="config">
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </h2>
         <Grid container spacing={2}>
           {this.state.edges.map((edge, key) => (
@@ -137,7 +144,6 @@ class EdgeCard extends Component {
 
   componentDidMount() {
     this.getAvailability();
-    this.getCpu();
   }
 
   componentWillUnmount() {
@@ -163,9 +169,7 @@ class EdgeCard extends Component {
     this.intervalID = setTimeout(this.getCpu.bind(this), 5000);
   };
 
-  getMemory = () => {
-
-  }
+  getMemory = () => {};
 
   getAvailability = () => {
     fetch(
@@ -247,52 +251,6 @@ class EdgeCard extends Component {
                 />
               )}
             </Grid>
-            {this.state.available ? (
-              <Grid container justifyContent="center" spacing={1}>
-                <div style={{ width: "70%" }}>
-                  <br />
-                </div>
-
-                <br />
-                <div style={{ width: "80%" }}>
-                  <Box display="flex" alignItems="center">
-                    <Box minWidth={70}>
-                      <Typography variant="body2" color="textSecondary">
-                        <i>CPU</i>
-                      </Typography>
-                    </Box>
-                    <Box width="100%" mr={1}>
-                      <LinearProgress
-                        color="primary"
-                        variant="determinate"
-                        value={this.state.cpu}
-                      />
-                    </Box>
-                    <Box width="100%" mr={1}>
-                      <Typography variant="body2" color="textSecondary">
-                      {this.state.cpu} % 
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box display="flex" alignItems="center">
-                    <Box minWidth={70}>
-                      <Typography variant="body2" color="textSecondary">
-                        <i> Memory </i>
-                      </Typography>
-                    </Box>
-                    <Box width="100%" mr={1}>
-                      <LinearProgress
-                        color="primary"
-                        variant="determinate"
-                        value="50"
-                      />
-                    </Box>
-                  </Box>
-                </div>
-              </Grid>
-            ) : (
-              ""
-            )}
           </CardContent>
 
           <CardActions disableSpacing>

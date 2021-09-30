@@ -34,7 +34,10 @@ import Dashboard from "./Dashboard";
 import SecureStorage from "./SecureStorage";
 import Orchestration from "./Orchestration";
 import Architecture from "./Architecture";
+import ConfigNetwork from "./ConfigNetwork";
 import Terminal from "./Terminal";
+
+import systemx_logo from "../images/systemx.png";
 
 export default function App() {
   const classes = useStyles();
@@ -84,7 +87,7 @@ export default function App() {
       >
         <Grid container className={classes.drawerHeader}>
           <Grid item md={3}>
-            <Avatar alt="IRT Logo" src="/systemx_logo.png" />
+            <Avatar alt="IRT Logo" src={systemx_logo} />
           </Grid>
           <Grid item md={7}>
             <Typography variant="h6"> IRT SytemX </Typography>
@@ -108,6 +111,22 @@ export default function App() {
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
+            </ListItem>
+          </Link>
+          <Link
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/architecture"
+          >
+            <ListItem
+              button
+              divider
+              key="architecture"
+              selected={location.pathname === "/architecture"}
+            >
+              <ListItemIcon>
+                <AccountTreeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Architecture" />
             </ListItem>
           </Link>
           <Link
@@ -142,22 +161,6 @@ export default function App() {
               <ListItemText primary="Orchestration algorithms" />
             </ListItem>
           </Link>
-          <Link
-            style={{ color: "inherit", textDecoration: "inherit" }}
-            to="/architecture"
-          >
-            <ListItem
-              button
-              divider
-              key="architecture"
-              selected={location.pathname === "/architecture"}
-            >
-              <ListItemIcon>
-                <AccountTreeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Architecture" />
-            </ListItem>
-          </Link>
         </List>
       </Drawer>
 
@@ -173,8 +176,11 @@ export default function App() {
             <Route path="/orchestration">
               <Orchestration />
             </Route>
-            <Route path="/Architecture">
+            <Route path="/architecture">
               <Architecture />
+            </Route>
+            <Route path="/configNetwork">
+              <ConfigNetwork />
             </Route>
           </Switch>
         </Container>

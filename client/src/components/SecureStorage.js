@@ -10,7 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import List from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -20,7 +19,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
-import { Typography } from "@material-ui/core";
 export default class SecureStorage extends Component {
   constructor(props) {
     super(props);
