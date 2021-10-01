@@ -12,13 +12,18 @@ exports.get_ip_address = (edge) => {
 
 exports.get_availability = async (edge) => {
   const ip = exports.get_ip_address(edge);
-  if(parseInt(edge) >= 1 && parseInt(edge) <= 10) {
-    // Test ssh command 
+  const host = exports.get_host(edge);
+  if (parseInt(edge) >= 1 && parseInt(edge) <= 10) {
+    try {
+      child_process.execSync("ssh " + host + " date", {timeout: 1000, stdio: false});
+      return true;
+    } catch (e) {
+      return false;
+    }
   } else {
     const cfg = { timeout: 1 };
     const status = await ping.promise.probe(ip, cfg);
     return status.alive;
-
   }
 };
 
@@ -30,7 +35,10 @@ exports.get_cpu_usage = async (edge) => {
   if (false) {
     command = "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
   } else {
-    command = "ssh -o \"StrictHostKeyChecking=no\" " + ip + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
+    command =
+      'ssh -o "StrictHostKeyChecking=no" ' +
+      ip +
+      " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
   }
   try {
     const result = child_process.execSync(command).toString();

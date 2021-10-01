@@ -35,7 +35,7 @@ import SecureStorage from "./SecureStorage";
 import Orchestration from "./Orchestration";
 import Architecture from "./Architecture";
 import ConfigNetwork from "./ConfigNetwork";
-import Terminal from "./Terminal";
+//import Terminal from "./Terminal";
 
 import systemx_logo from "../images/systemx.png";
 

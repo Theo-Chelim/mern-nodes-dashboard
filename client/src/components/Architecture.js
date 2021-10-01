@@ -2,15 +2,12 @@ import React, { Component } from "react";
 
 import Graph from "react-graph-vis";
 
-import { Box, Grid, Card } from "@material-ui/core";
-
-import architecture_image from "../images/architecture.jpg";
-
+import { Box, Grid } from "@material-ui/core";
 export default class Architecture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 5,
+      ready: false,
       graph: {
         nodes: [
           { id: 0, label: "NUC Gateway", color: "#e0df41" },
@@ -32,10 +29,6 @@ export default class Architecture extends Component {
           { id: 1005, label: "Dashboard", color: "#41e0c9" },
           { id: 1006, label: "Secure storage module", color: "#41e0c9" },
           { id: 1007, label: "Orchestration algorithms", color: "#41e0c9" },
-
-          /*           { id: 2, label: "Node 2", color: "#e09c41" },
-          { id: 4, label: "Node 4", color: "#7be041" },
-          { id: 5, label: "Node 5", color: "#41e0c9" }, */
         ],
         edges: [
           { from: 0, to: 1, arrows: { to: { scaleFactor: 0 } } },
@@ -110,42 +103,69 @@ export default class Architecture extends Component {
             console.log(nodes);
             console.log("Selected edges:");
             console.log(edges);
-            alert("Selected node: " + nodes);
           },
         },
       },
-    };
-
-    [...Array(120).keys()].map((i) => {
-      this.state.graph.nodes = [
-        ...this.state.graph.nodes,
-        { id: i + 11, label: "E" + (i + 11), color: "#7be041" },
-      ];
-      this.state.graph.edges = [
-        ...this.state.graph.edges,
-        {
-          to: 1000,
-          from: i + 11,
-          length: 200,
-          arrows: { to: { scaleFactor: 0 } },
-        },
-      ];
-    });
+    };    
   }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          let nodes = [];
+          let edges = [];
+          result.forEach((edge) => {
+            nodes = [
+              ...nodes,
+              { id: edge.id, label: "E" + edge.id, color: "#7be041" },
+            ];
+            edges = [
+              ...edges,
+              {
+                to: 1000,
+                from: edge.id,
+                length: 200,
+                arrows: { to: { scaleFactor: 0 } },
+              },
+            ];
+          });
+
+          this.setState({
+            graph: {
+              ...this.state.graph,
+              nodes: [...this.state.graph.nodes, ...nodes],
+              edges: [...this.state.graph.edges, ...edges],
+            },
+          });
+          this.setState({ ready: true });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
 
   render() {
     return (
       <Box>
         <h1 className={"fontTitle"}> Network architecture </h1>
         <Grid container justifyContent="center">
-          <Graph
-            graph={this.state.graph}
-            options={this.state.options}
-            events={this.state.events}
-            style={{ height: "100vh" }}
-          />
-          {/*             <img src={architecture_image} alt="architecture IONet" />
-           */}
+          {this.state.ready ? (
+            <Graph
+              graph={this.state.graph}
+              options={this.state.options}
+              events={this.state.events}
+              style={{ height: "100vh" }}
+            />
+          ) : (
+            "Loading network configuration..."
+          )}
         </Grid>
       </Box>
     );

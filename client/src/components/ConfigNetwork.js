@@ -21,14 +21,164 @@ import AddIcon from "@material-ui/icons/Add";
 export default class ConfigNetwork extends Component {
   constructor(props) {
     super(props);
+    this.referentials = [];
     this.state = {
-      types: [<ConfigType />],
+      variants: [],
     };
   }
 
-  addType = () => {
-    console.log("test add");
-    this.setState({ types: [...this.state.types, <ConfigType />] });
+  componentDidMount() {
+    this.getEdges();
+  }
+
+  getEdges = () => {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          let edgeVariants = new Set();
+          let variants = [];
+
+          result.forEach((edge) => {
+            edgeVariants.add(
+              JSON.stringify([edge.arch, edge.cpu, edge.smp, edge.memory])
+            );
+          });
+
+          for (let variant of edgeVariants) {
+            let count = 0;
+            let tuple = JSON.parse(variant);
+            result.forEach((edge) => {
+              if (
+                edge.arch === tuple[0] &&
+                edge.cpu === tuple[1] &&
+                edge.smp === tuple[2] &&
+                edge.memory === tuple[3]
+              ) {
+                count++;
+              }
+            });
+
+            let arch = 0;
+            switch (tuple[0]) {
+              case "arm32":
+                arch = 1;
+                break;
+              case "arm64":
+                arch = 2;
+                break;
+              default:
+                break;
+            }
+
+            let cpu = 0;
+            switch (tuple[1]) {
+              case "cortex-a53":
+                cpu = 1;
+                break;
+              case "cortex-a57":
+                cpu = 2;
+                break;
+              default:
+                break;
+            }
+
+            let core = tuple[2];
+
+            let memory = 0;
+            switch (tuple[3]) {
+              case 256:
+                memory = 1;
+                break;
+              case 512:
+                memory = 2;
+                break;
+              case 1024:
+                memory = 3;
+                break;
+              case 2048:
+                memory = 4;
+                break;
+              default:
+                break;
+            }
+
+            let ref = React.createRef();
+            this.referentials = [...this.referentials, ref];
+
+            variants = [
+              ...variants,
+              <ConfigVariant
+                arch={arch}
+                cpu={cpu}
+                core={core}
+                memory={memory}
+                clone={count}
+                ref={ref}
+              />,
+            ];
+          }
+
+          if (variants.length > 0) {
+            this.setState({ variants: variants });
+          } else {
+            this.setState({
+              variants: [
+                <ConfigVariant
+                  arch={1}
+                  cpu={1}
+                  core={1}
+                  memory={1}
+                  clone={1}
+                />,
+              ],
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
+  handleSubmit = () => {
+    let edges_data = [];
+    let count = 1;
+    this.referentials.forEach((ele) => {
+       [...Array(parseInt(ele.current.state.clone)).keys()].map((i) => {
+        edges_data = [
+          ...edges_data,
+          {
+            id: count,
+            arch: "arm64",
+            machine: "virt",
+            cpu: "cortex-a57",
+            smp: 2,
+            memory: 256,
+          },
+        ];
+        count++;
+      });
+    });
+    console.log(edges_data);
+  };
+
+  addVariant = () => {
+    let ref = React.createRef();
+    this.referentials = [...this.referentials, ref];
+    this.setState({
+      variants: [
+        ...this.state.variants,
+        <ConfigVariant
+          arch={1}
+          cpu={1}
+          core={1}
+          memory={1}
+          clone={1}
+          ref={ref}
+        />,
+      ],
+    });
   };
 
   render() {
@@ -50,7 +200,7 @@ export default class ConfigNetwork extends Component {
           Configure virtual edges network{" "}
         </h2>
         <Grid container justifyContent="center">
-          <Grid item >
+          <Grid item>
             <Button
               color="primary"
               variant="contained"
@@ -60,17 +210,21 @@ export default class ConfigNetwork extends Component {
             </Button>
           </Grid>
         </Grid>
-        <br/>
-        {this.state.types.map((type, key) => type)}
+        <br />
+        {this.state.variants.map((variant, key) => variant)}
         <br />
 
         <Grid container justifyContent="center">
-          <Tooltip title="Add new edge type" placement="right" aria-label="add">
+          <Tooltip
+            title="Add new edge Variant"
+            placement="right"
+            aria-label="add"
+          >
             <Fab
               size="small"
               color="primary"
               aria-label="add"
-              onClick={this.addType}
+              onClick={this.addVariant}
             >
               <AddIcon />
             </Fab>
@@ -81,20 +235,41 @@ export default class ConfigNetwork extends Component {
   }
 }
 
-class ConfigType extends Component {
+class ConfigVariant extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      arch: props.arch,
+      cpu: props.cpu,
+      core: props.core,
+      memory: props.memory,
+      clone: props.clone,
+    };
   }
 
-  componentDidMount() {}
+  handleArch = (event) => {
+    this.setState({ arch: event.target.value });
+  };
 
-  componentWillUnmount() {}
+  handleCpu = (event) => {
+    this.setState({ cpu: event.target.value });
+  };
+
+  handleCore = (event) => {
+    this.setState({ core: event.target.value });
+  };
+
+  handleMemory = (event) => {
+    this.setState({ memory: event.target.value });
+  };
+
+  handleClone = (event) => {
+    this.setState({ clone: event.target.value });
+  };
 
   render() {
     return (
       <Grid container justifyContent="center" spacing={5}>
-        
         <Grid item xs={6} sm={6} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#f0f0f0" }}>
             <CardContent>
@@ -103,46 +278,59 @@ class ConfigType extends Component {
                   <InputLabel id="arch" shrink>
                     Architecture
                   </InputLabel>
-                  <Select defaultValue={1} labelId="arch">
+                  <Select
+                    value={this.state.arch}
+                    labelId="arch"
+                    onChange={this.handleArch}
+                  >
                     <MenuItem value={1}>ARM 32bits</MenuItem>
                     <MenuItem value={2}>ARM 64bits</MenuItem>
                     <MenuItem value={3}>x86 </MenuItem>
-                    <MenuItem value={3}>x86_64 </MenuItem>
-                    <MenuItem value={3}>Mips </MenuItem>
+                    <MenuItem value={4}>x86_64 </MenuItem>
+                    <MenuItem value={5}>Mips </MenuItem>
                   </Select>
                 </Grid>
                 <Grid item md={2}>
                   <InputLabel id="cpu" shrink>
                     CPU
                   </InputLabel>
-                  <Select defaultValue={1} labelId="cpu">
-                    <MenuItem value={1}>Cortex A53</MenuItem>
-                    <MenuItem value={2}> ... </MenuItem>
-                    <MenuItem value={3}> ... </MenuItem>
-                    <MenuItem value={3}> ... </MenuItem>
-                    <MenuItem value={3}> ... </MenuItem>
+                  <Select
+                    value={this.state.cpu}
+                    labelId="cpu"
+                    onChange={this.handleCpu}
+                  >
+                    <MenuItem value={1}> Cortex A53 </MenuItem>
+                    <MenuItem value={2}> Cortex A57 </MenuItem>
                   </Select>
                 </Grid>
                 <Grid item md={1}>
                   <InputLabel id="core" shrink>
                     Core
                   </InputLabel>
-                  <Select defaultValue={1} labelId="core">
-                    <MenuItem value={1}>1</MenuItem>
+                  <Select
+                    value={this.state.core}
+                    labelId="core"
+                    onChange={this.handleCore}
+                  >
+                    <MenuItem value={1}> 1 </MenuItem>
                     <MenuItem value={2}> 2 </MenuItem>
                     <MenuItem value={3}> 3 </MenuItem>
-                    <MenuItem value={3}> 4 </MenuItem>
+                    <MenuItem value={4}> 4 </MenuItem>
                   </Select>
                 </Grid>
                 <Grid item md={2}>
                   <InputLabel id="memory" shrink>
                     Memory
                   </InputLabel>
-                  <Select defaultValue={1} labelId="memory">
+                  <Select
+                    value={this.state.memory}
+                    labelId="memory"
+                    onChange={this.handleMemory}
+                  >
                     <MenuItem value={1}> 256 Mb</MenuItem>
                     <MenuItem value={2}> 512 Mb </MenuItem>
                     <MenuItem value={3}> 1024 Mb </MenuItem>
-                    <MenuItem value={3}> 2048 Mb </MenuItem>
+                    <MenuItem value={4}> 2048 Mb </MenuItem>
                   </Select>
                 </Grid>
                 <Grid item md={2}>
@@ -151,12 +339,13 @@ class ConfigType extends Component {
                   </InputLabel>
                   <TextField
                     id="standard-number"
+                    variant="standard"
+                    value={this.state.clone}
+                    onChange={this.handleClone}
                     type="number"
-                    defaultValue="1"
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    variant="standard"
                   />
                 </Grid>
               </Grid>

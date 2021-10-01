@@ -13,8 +13,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Tooltip from "@material-ui/core/Tooltip";
+//import LinearProgress from "@material-ui/core/LinearProgress";
 
 import { red, orange, green } from "@material-ui/core/colors";
 
@@ -37,13 +37,6 @@ export default class Dashboard extends Component {
       open: false,
       edges: [],
     };
-  }
-
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData = () => {
     fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
       .then((res) => res.json())
       .then(
@@ -55,7 +48,7 @@ export default class Dashboard extends Component {
           console.log(error);
         }
       );
-  };
+  }
 
   openTerminal = () => {
     this.setState({ open: true });
@@ -85,13 +78,17 @@ export default class Dashboard extends Component {
         <h2 className="fontTitle"> Physical edges </h2>
         <Grid container spacing={2}>
           <Grid container spacing={2}>
-            {[...new Array(10)].map((_, key) => (
-              <EdgeCard
-                key={key + 1}
-                identifier={key + 1}
-                openTerminal={this.openTerminal}
-              />
-            ))}
+            {this.state.edges.length > 0
+              ? (
+                [...new Array(10)].map((_, key) => 
+                  <EdgeCard
+                    key={key + 1}
+                    identifier={key + 1}
+                    openTerminal={this.openTerminal}
+                  />
+                )
+                )
+              : "Network configuration loading ... "}
           </Grid>
         </Grid>
         <br /> <br />
