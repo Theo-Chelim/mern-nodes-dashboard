@@ -137,6 +137,7 @@ class EdgeCard extends Component {
       cpu: 100,
       memory: 50,
     };
+    this.controller = new AbortController();
   }
 
   componentDidMount() {
@@ -144,6 +145,7 @@ class EdgeCard extends Component {
   }
 
   componentWillUnmount() {
+    this.controller.abort();
     clearTimeout(this.intervalID);
   }
 
@@ -169,11 +171,13 @@ class EdgeCard extends Component {
   getMemory = () => {};
 
   getAvailability = () => {
+    const {signal} = this.controller;
+
     fetch(
       process.env.REACT_APP_BASE_URL +
         "/api/edge/" +
         this.props.identifier +
-        "/availability"
+        "/availability", { signal, importance: 'low'},
     )
       .then((res) => res.json())
       .then(

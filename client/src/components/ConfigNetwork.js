@@ -32,7 +32,7 @@ export default class ConfigNetwork extends Component {
   }
 
   getEdges = () => {
-    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/", { importance: "high" })
       .then((res) => res.json())
       .then(
         (result) => {
@@ -145,7 +145,7 @@ export default class ConfigNetwork extends Component {
     let edges_data = [];
     let count = 1;
     this.referentials.forEach((ele) => {
-       [...Array(parseInt(ele.current.state.clone)).keys()].map((i) => {
+      [...Array(parseInt(ele.current.state.clone)).keys()].forEach((_) => {
         edges_data = [
           ...edges_data,
           {

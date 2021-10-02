@@ -14,12 +14,9 @@ exports.get_availability = async (edge) => {
   const ip = exports.get_ip_address(edge);
   const host = exports.get_host(edge);
   if (parseInt(edge) >= 1 && parseInt(edge) <= 10) {
-    try {
-      child_process.execSync("ssh " + host + " date", {timeout: 1000, stdio: false});
-      return true;
-    } catch (e) {
-      return false;
-    }
+    let rawdata = fs.readFileSync("config/status.json");
+    let status = JSON.parse(rawdata);
+    return status[host];
   } else {
     const cfg = { timeout: 1 };
     const status = await ping.promise.probe(ip, cfg);
