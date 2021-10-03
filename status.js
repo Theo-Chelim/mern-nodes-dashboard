@@ -18,12 +18,13 @@ let status = {
 
 while (true) {
   edges.forEach((edge) => {
+    let host = "Edge" + edge;
     try {
       let command = "ssh Edge" + edge + " date";
       child_process.execSync(command, {timeout: 1000});
-      status["Edge" + edge] = true;
+      status[host] = true;
     } catch (e) {
-      status["Edge" + edge] = false;
+      status[host] = false;
     }
   });
 
