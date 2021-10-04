@@ -14,23 +14,12 @@ module.exports.allEdges = async (req, res) => {
 };
 
 module.exports.updateConfig = async (req, res) => {
-  console.log(req.body);
-  const examples = [];
-  [...Array(10).keys()].map((i) => {
-    examples.push({
-      id: i + 11,
-      arch: "arm64",
-      machine: "virt",
-      cpu: "cortex-a57",
-      smp: 1,
-      memory: 256,
-    });
-  });
+  const edges_config = req.body;
 
-  console.log(examples);
-  if (!edgeUtils.verify_smp_limit(examples)) {
+  //console.log(edges_config);
+  if (!edgeUtils.verify_smp_limit(edges_config)) {
     res.status(403).json("Max number of cores exceeded");
-  } else if (!edgeUtils.verify_memory_limit(examples)) {
+  } else if (!edgeUtils.verify_memory_limit(edges_config)) {
     res.status(403).json("Memory limit exceeded");
   } else {
     // others verifications
@@ -39,7 +28,7 @@ module.exports.updateConfig = async (req, res) => {
 
     await EdgeModel.deleteMany({}, () => console.log("Flush edges database"));
 
-    for (const edge of examples) {
+    for (const edge of edges_config) {
       await new EdgeModel(edge).save();
       edgeUtils.start_qemu_edge(
         edge.id,

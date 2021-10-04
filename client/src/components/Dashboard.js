@@ -191,7 +191,9 @@ class EdgeCard extends Component {
     this.intervalID = setTimeout(this.getAvailability.bind(this), 5000);
   };
 
-  handleTerminal = () => {};
+  handleTerminal = (id) => {
+    window.open("http://192.168.26.1:8888/?hostname=172.16.100." + id + "&username=root&password="+btoa("sinmao"));
+  };
 
   handlePowerOff = (id) => {
     axios
@@ -220,7 +222,7 @@ class EdgeCard extends Component {
             {this.props.arch ? (
               <Typography color="textSecondary" variant="subtitle2">
                 {this.props.arch} / {this.props.core} {this.props.cpu} /{" "}
-                {this.props.memory}mb memory
+                {this.props.memory}mb 
               </Typography>
             ) : (
               <Typography color="textSecondary" variant="subtitle2">
@@ -269,7 +271,10 @@ class EdgeCard extends Component {
               </IconButton>
             </Tooltip>
             <Tooltip title="SSH login" placement="right" aria-label="login">
-              <IconButton aria-label="login" onClick={this.props.openTerminal}>
+              <IconButton
+                aria-label="login"
+                onClick={() => this.handleTerminal(this.props.identifier)}
+              >
                 <IoIosLogIn />
               </IconButton>
             </Tooltip>

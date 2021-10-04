@@ -7,6 +7,11 @@ export default class Architecture extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      options: {
+        autoResize: true,
+        height: "100%",
+        width: "100%",
+      },
       ready: false,
       graph: {
         nodes: [
@@ -106,7 +111,7 @@ export default class Architecture extends Component {
           },
         },
       },
-    };    
+    };
   }
 
   componentDidMount() {
@@ -154,15 +159,25 @@ export default class Architecture extends Component {
   render() {
     return (
       <Box>
-        <h1 className={"fontTitle"}> Network architecture </h1>
+        <h1 className={"fontTitle"}> IONet architecture </h1>
         <Grid container justifyContent="center">
           {this.state.ready ? (
-            <Graph
-              graph={this.state.graph}
-              options={this.state.options}
-              events={this.state.events}
-              style={{ height: "100vh" }}
-            />
+            <Box
+              sx={{ border: "dashed" }}
+              border={2}
+              borderColor="grey.500"
+              borderRadius={5}
+              style={{ padding: 0 }}
+              width="100%"
+              height="80vh"
+            >
+              <Graph
+                graph={this.state.graph}
+                options={this.state.options}
+                events={this.state.events}
+                style={{ width: "100%", height: "100%"}}
+              />
+            </Box>
           ) : (
             "Loading network configuration..."
           )}

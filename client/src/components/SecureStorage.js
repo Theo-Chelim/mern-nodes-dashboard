@@ -19,6 +19,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+
+import { blue, grey } from "@material-ui/core/colors";
 export default class SecureStorage extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +102,7 @@ export default class SecureStorage extends Component {
   render() {
     return (
       <Grid container style={{ padding: 10 }}>
-        <h1 className="fontTitle"> Secure storage </h1>
+        <h1 className="fontTitle"> Secure storage usecase </h1>
         <Snackbar
           open={this.state.open}
           autoHideDuration={6000}
@@ -139,7 +141,7 @@ export default class SecureStorage extends Component {
                     />
                     <Button
                       variant="outlined"
-                      color="primary"
+                      style={{ color: blue[700], borderColor: blue[700] }}
                       onClick={() => this.refs.fileInput.click()}
                     >
                       {this.state.selectedFile === null
@@ -156,11 +158,11 @@ export default class SecureStorage extends Component {
                     </InputLabel>
 
                     <Slider
-                      style={{ width: 150 }}
                       labelId="len"
                       aria-labelledby="continuous-slider"
                       valueLabelDisplay="auto"
                       defaultValue={3}
+                      style={{ color: blue[700], width: 150 }}
                       step={1}
                       min={3}
                       max={20}
@@ -170,7 +172,11 @@ export default class SecureStorage extends Component {
                     <InputLabel id="algo" shrink>
                       Optimization algorithm
                     </InputLabel>
-                    <Select value={1} labelId="algo">
+                    <Select
+                      value={1}
+                      labelId="algo"
+                      style={{ color: blue[700] }}
+                    >
                       <MenuItem value={1}>Random</MenuItem>
                       <MenuItem value={2}>Bestfit CPU</MenuItem>
                       <MenuItem value={3}>Bestfit Storage</MenuItem>
@@ -180,6 +186,7 @@ export default class SecureStorage extends Component {
                     <Button
                       color="primary"
                       variant="contained"
+                      style={{ backgroundColor: blue[700] }}
                       onClick={this.handleSubmit}
                     >
                       Submit
@@ -214,6 +221,7 @@ export default class SecureStorage extends Component {
                           />
                           <Button
                             variant="outlined"
+                            color={blue[700]}
                             onClick={() => this.handleOpenInfos(file.id)}
                           >
                             Infos
@@ -250,7 +258,7 @@ export default class SecureStorage extends Component {
           <Grid container justifyContent="center">
             <Button
               variant="contained"
-              color="primary"
+              color={blue[700]}
               style={{ marginBottom: "5px" }}
             >
               Download

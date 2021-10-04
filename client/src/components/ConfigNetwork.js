@@ -18,6 +18,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
 
+import { blue, grey } from "@material-ui/core/colors";
+
 export default class ConfigNetwork extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,7 @@ export default class ConfigNetwork extends Component {
   }
 
   getEdges = () => {
-    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/", { importance: "high" })
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -146,21 +148,70 @@ export default class ConfigNetwork extends Component {
     let count = 1;
     this.referentials.forEach((ele) => {
       [...Array(parseInt(ele.current.state.clone)).keys()].forEach((_) => {
+        let arch;
+        switch (ele.current.state.arch) {
+          case 1:
+            arch = "arm32";
+            break;
+          case 2:
+            arch = "arm64";
+          default:
+            break;
+        }
+
+        let cpu;
+        switch (ele.current.state.cpu) {
+          case 1:
+            cpu = "cortex-a53";
+            break;
+          case 2:
+            cpu = "cortex-a57";
+            break;
+          default:
+            break;
+        }
+
+        let memory;
+        switch (ele.current.state.memory) {
+          case 1:
+            memory = 256;
+            break;
+          case 2:
+            memory = 512;
+            break;
+          case 3:
+            memory = 1024;
+            break;
+          case 4:
+            memory = 2048;
+            break;
+          default:
+            break;
+        }
+
         edges_data = [
           ...edges_data,
           {
-            id: count,
-            arch: "arm64",
+            id: count + 10,
+            arch: arch,
             machine: "virt",
-            cpu: "cortex-a57",
-            smp: 2,
-            memory: 256,
+            cpu: cpu,
+            smp: parseInt(ele.current.state.core),
+            memory: memory,
           },
         ];
         count++;
       });
     });
     console.log(edges_data);
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(edges_data),
+    };
+    fetch(process.env.REACT_APP_BASE_URL + "/api/edge/", requestOptions).then(
+      (response) => response.json()
+    );
   };
 
   addVariant = () => {
@@ -185,7 +236,6 @@ export default class ConfigNetwork extends Component {
     return (
       <Box>
         <h2 className={"fontTitle"}>
-          {" "}
           <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/">
             <Tooltip
               title="Back to dashboard"
@@ -197,13 +247,14 @@ export default class ConfigNetwork extends Component {
               </IconButton>
             </Tooltip>
           </Link>
-          Configure virtual edges network{" "}
+          Configure virtual edges network
         </h2>
         <Grid container justifyContent="center">
           <Grid item>
             <Button
               color="primary"
               variant="contained"
+              style={{ backgroundColor: blue[500] }}
               onClick={this.handleSubmit}
             >
               Validate configuration
@@ -224,6 +275,7 @@ export default class ConfigNetwork extends Component {
               size="small"
               color="primary"
               aria-label="add"
+              style={{ backgroundColor: blue[500] }}
               onClick={this.addVariant}
             >
               <AddIcon />
