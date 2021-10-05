@@ -3,9 +3,11 @@ import React, { Component } from "react";
 import Graph from "react-graph-vis";
 
 import { Box, Grid } from "@material-ui/core";
+
 export default class Architecture extends Component {
   constructor(props) {
     super(props);
+    const arrow_conf = { to: { scaleFactor: 0 } };
     this.state = {
       options: {
         autoResize: true,
@@ -36,70 +38,70 @@ export default class Architecture extends Component {
           { id: 1007, label: "Orchestration algorithms", color: "#41e0c9" },
         ],
         edges: [
-          { from: 0, to: 1, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 2, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 3, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 4, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 5, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 6, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 7, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 8, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 9, arrows: { to: { scaleFactor: 0 } } },
-          { from: 0, to: 10, arrows: { to: { scaleFactor: 0 } } },
+          { from: 0, to: 1, arrows: arrow_conf },
+          { from: 0, to: 2, arrows: arrow_conf },
+          { from: 0, to: 3, arrows: arrow_conf },
+          { from: 0, to: 4, arrows: arrow_conf },
+          { from: 0, to: 5, arrows: arrow_conf },
+          { from: 0, to: 6, arrows: arrow_conf },
+          { from: 0, to: 7, arrows: arrow_conf },
+          { from: 0, to: 8, arrows: arrow_conf },
+          { from: 0, to: 9, arrows: arrow_conf },
+          { from: 0, to: 10, arrows: arrow_conf },
           {
             from: 0,
             to: 1000,
             length: 600,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1001,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1002,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1003,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1004,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1005,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1006,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
           {
             from: 1000,
             to: 1007,
             dashes: true,
             length: 300,
-            arrows: { to: { scaleFactor: 0 } },
+            arrows: arrow_conf,
           },
         ],
         events: {
@@ -175,7 +177,7 @@ export default class Architecture extends Component {
                 graph={this.state.graph}
                 options={this.state.options}
                 events={this.state.events}
-                style={{ width: "100%", height: "100%"}}
+                style={{ width: "100%", height: "100%" }}
               />
             </Box>
           ) : (

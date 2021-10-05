@@ -30,12 +30,11 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import Dashboard from "./Dashboard";
-import SecureStorage from "./SecureStorage";
-import Orchestration from "./Orchestration";
-import Architecture from "./Architecture";
-import ConfigNetwork from "./ConfigNetwork";
-//import Terminal from "./Terminal";
+import DashboardPage from "./DashboardPage";
+import SecureStoragePage from "./SecureStoragePage";
+import OrchestrationPage from "./OrchestrationPage";
+import ArchitecturePage from "./ArchitecturePage";
+import NetworkConfigPage from "./NetworkConfigPage";
 
 import systemx_logo from "../images/systemx.png";
 
@@ -168,19 +167,19 @@ export default function App() {
         <Container maxWidth="xl" style={{ padding: "6vh", height: "100%" }}>
           <Switch>
             <Route exact path="/">
-              <Dashboard />
+              <DashboardPage />
             </Route>
             <Route path="/secure_storage">
-              <SecureStorage />
+              <SecureStoragePage />
             </Route>
             <Route path="/orchestration">
-              <Orchestration />
+              <OrchestrationPage />
             </Route>
             <Route path="/architecture">
-              <Architecture />
+              <ArchitecturePage />
             </Route>
             <Route path="/configNetwork">
-              <ConfigNetwork />
+              <NetworkConfigPage />
             </Route>
           </Switch>
         </Container>
