@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import Moment from "moment";
 
-import axios from "axios";
-
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -24,6 +22,8 @@ export default class SecureStoragePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      optimization: 0,
+      chunks: 3,
       selectedFile: null,
       myfiles: [],
       open: false,
@@ -62,8 +62,9 @@ export default class SecureStoragePage extends Component {
   handleSubmit = (event) => {
     const data = new FormData();
     data.append("file", this.state.selectedFile);
-    data.append("nb_chunks", 3);
-    data.append("algo", "bestfit");
+    data.append("chunks", this.state.chunks);
+    data.append("optimization", this.state.optimization);
+
     fetch(process.env.REACT_APP_BASE_URL + "/api/file/", {
       method: "POST",
       body: data,
@@ -96,6 +97,14 @@ export default class SecureStoragePage extends Component {
         });
       });
     this.setState({ openInfos: true });
+  };
+
+  handleOptimizationChange = (event) => {
+    this.setState({ optimization: event.target.value });
+  };
+
+  handleChunksChange = (_, value) => {
+    this.setState({ chunks: value });
   };
 
   render() {
@@ -166,7 +175,8 @@ export default class SecureStoragePage extends Component {
                     labelId="len"
                     aria-labelledby="continuous-slider"
                     valueLabelDisplay="auto"
-                    defaultValue={3}
+                    value={this.state.chunks}
+                    onChange={this.handleChunksChange}
                     style={{ color: blue[700], width: 150 }}
                     step={1}
                     min={3}
@@ -178,13 +188,14 @@ export default class SecureStoragePage extends Component {
                     Optimization algorithm
                   </InputLabel>
                   <Select
-                    value={1}
+                    value={this.state.optimization}
+                    onChange={this.handleOptimizationChange}
                     labelId="algo"
                     style={{ width: "80%", color: blue[700] }}
                   >
-                    <MenuItem value={1}>Random</MenuItem>
-                    <MenuItem value={2}>Bestfit CPU</MenuItem>
-                    <MenuItem value={3}>Bestfit Storage</MenuItem>
+                    <MenuItem value={0}> Random choice </MenuItem>
+                    <MenuItem value={1}> BestFit - CPU metric </MenuItem>
+                    <MenuItem value={2}> BestFit - Storage metric </MenuItem>
                   </Select>
                 </Grid>
                 <Grid item md={2}>

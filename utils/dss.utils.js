@@ -50,7 +50,7 @@ exports.deploy_chunks = (strategy) => {
     edge = x["edge"];
     chunk = x["chunk"];
     child_process.exec(
-      "scp '" + chunk + "' " + edge + ":/home/ifc/data_storage/",
+      "scp " + chunk + " " + edge + ":/home/ifc/data-storage",
       (error, stdout, stderr) => {
         if (error) {
           console.log(`error: ${error.message}`);
@@ -65,9 +65,11 @@ exports.deploy_chunks = (strategy) => {
 };
 
 exports.get_chunks = (strategy) => {
-  strategy.forEach((edge, chunk) => {
+  strategy.forEach(x => {
+    edge = x["edge"];
+    chunk = x["chunk"];
     child_process.exec(
-      "scp " + edge + ":'/home/ifc/data_storage/" + chunk + "' .",
+      "scp " + edge + ":'/home/ifc/data-storage/" + chunk + "' .",
       (error, stdout, stderr) => {
         if (error) {
           console.log(`error: ${error.message}`);

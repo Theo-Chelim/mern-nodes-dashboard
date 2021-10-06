@@ -21,7 +21,7 @@ while (true) {
     let host = "Edge" + edge;
     try {
       let command = "ssh Edge" + edge + " date";
-      child_process.execSync(command, {timeout: 1000});
+      child_process.execSync(command, {timeout: 1500});
       status[host] = true;
     } catch (e) {
       status[host] = false;

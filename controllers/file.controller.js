@@ -1,5 +1,7 @@
 const multer = require("multer");
 const splitFile = require("split-file");
+const path = require("path");
+const fileSystem = require('fs');
 
 const FileModel = require("../models/file.model");
 
@@ -51,7 +53,7 @@ module.exports.addFile = async (req, res) => {
     dss.remove_chunks([req.file.path]);
 
     splitFile
-      .splitFile(ciphered_file, 3)
+      .splitFile(ciphered_file, req.body.chunks)
       .then(async (chunks) => {
         dss.remove_chunks([ciphered_file]);
         console.log(chunks);
@@ -74,18 +76,44 @@ module.exports.addFile = async (req, res) => {
 
           console.log(strategy);
 
-          /* dss.deploy_chunks(strategy); */
-          dss.remove_chunks(chunks);
+          await dss.deploy_chunks(strategy);
+          //dss.remove_chunks(chunks);
         } catch (error) {
           console.log(error);
-          dss.remove_chunks(chunks);
+          //dss.remove_chunks(chunks);
         }
       })
       .catch((err) => {
-        dss.remove_chunks([ciphered_file]);
+        //dss.remove_chunks([ciphered_file]);
         return res.status(500).json(err);
       });
 
     return res.status(200).send(req.file);
   });
+};
+
+module.exports.downloadFile = async (req, res) => {
+  try {
+    await FileModel.findById(req.params.id, (err, doc) => {
+      if (err) {
+        res.status(404).send("No file with this ID");
+      } else {
+        console.log(doc.strategy);
+        dss.get_chunks(doc.strategy);
+        let names = [];
+        doc.strategy.forEach((element) => {
+          names = [...names, element["chunk"]];
+        });
+        console.log(names);
+        splitFile.mergeFiles(names, "output.py");
+        /* dss.decipher_file_AES256("output.py.ciphered", "output.py", key); */
+        var options = {
+          root: path.join(__dirname, ".."),
+        };
+        res.sendFile("output.py", options);
+      }
+    });
+  } catch (error) {
+    res.status(500).send("Unable to get file strategy");
+  }
 };
