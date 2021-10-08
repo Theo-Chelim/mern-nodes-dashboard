@@ -186,7 +186,7 @@ export default function App() {
         <Grid container justifyContent="center">
           <i>
             IRT SystemX - Exploratory research 2021 - Makhlouf HADJI & Théo
-            CHELIM{" "}
+            CHELIMF
           </i>
         </Grid>
       </Box>
