@@ -1,7 +1,6 @@
 const multer = require("multer");
 const splitFile = require("split-file");
 const path = require("path");
-const fileSystem = require('fs');
 
 const FileModel = require("../models/file.model");
 
@@ -56,7 +55,6 @@ module.exports.addFile = async (req, res) => {
       .splitFile(ciphered_file, req.body.chunks)
       .then(async (chunks) => {
         dss.remove_chunks([ciphered_file]);
-        console.log(chunks);
         try {
           let strategy = [];
           await FileModel.find({ name: req.file.path }, (err, docs) => {
@@ -100,17 +98,28 @@ module.exports.downloadFile = async (req, res) => {
       } else {
         console.log(doc.strategy);
         dss.get_chunks(doc.strategy);
+
         let names = [];
         doc.strategy.forEach((element) => {
           names = [...names, element["chunk"]];
         });
-        console.log(names);
-        splitFile.mergeFiles(names, "output.py");
-        /* dss.decipher_file_AES256("output.py.ciphered", "output.py", key); */
-        var options = {
-          root: path.join(__dirname, ".."),
-        };
-        res.sendFile("output.py", options);
+
+        splitFile
+          .mergeFiles(names, names[0].slice(0, -9))
+          .then(() => {
+            dss.decipher_file_AES256(
+              names[0].slice(0, -9),
+              names[0].slice(0, -18),
+              key
+            );
+            var options = {
+              root: path.join(__dirname, ".."),
+            };
+            res.sendFile(names[0].slice(0, -18), options);
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+          });
       }
     });
   } catch (error) {

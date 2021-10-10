@@ -22,6 +22,7 @@ exports.decipher_file_AES256 = (input_file, output_file, key) => {
   fs.writeFileSync(output_file, decrypted);
 };
 
+
 exports.random_optimization = (chunks, edges) => {
   strategy = [];
 

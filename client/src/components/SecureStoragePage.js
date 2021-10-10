@@ -29,6 +29,7 @@ export default class SecureStoragePage extends Component {
       open: false,
       openInfos: false,
       fileInfosName: "",
+      fileInfosId: null,
       fileInfosStrategy: [],
     };
   }
@@ -93,6 +94,7 @@ export default class SecureStoragePage extends Component {
       .then((res) => {
         this.setState({
           fileInfosName: res.name,
+          fileInfosId: id,
           fileInfosStrategy: [...res.strategy],
         });
       });
@@ -282,7 +284,16 @@ export default class SecureStoragePage extends Component {
               color={blue[700]}
               style={{ marginBottom: "5px" }}
             >
-              Download
+              <a
+                href={
+                  process.env.REACT_APP_BASE_URL +
+                  "/api/file/" +
+                  this.state.fileInfosId
+                }
+                download
+              >
+                Download
+              </a>
             </Button>
           </Grid>
         </Dialog>
