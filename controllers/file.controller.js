@@ -82,7 +82,7 @@ module.exports.addFile = async (req, res) => {
         }
       })
       .catch((err) => {
-        //dss.remove_chunks([ciphered_file]);
+        dss.remove_chunks([ciphered_file]);
         return res.status(500).json(err);
       });
 
@@ -104,18 +104,14 @@ module.exports.downloadFile = async (req, res) => {
           names = [...names, element["chunk"]];
         });
 
+        const ciphered_file = names[0].slice(0, -9);
+        const plaintext_file = names[0].slice(0, -18);
+
         splitFile
-          .mergeFiles(names, names[0].slice(0, -9))
+          .mergeFiles(names, ciphered_file)
           .then(() => {
-            dss.decipher_file_AES256(
-              names[0].slice(0, -9),
-              names[0].slice(0, -18),
-              key
-            );
-            var options = {
-              root: path.join(__dirname, ".."),
-            };
-            res.sendFile(names[0].slice(0, -18), options);
+            dss.decipher_file_AES256(ciphered_file, plaintext_file, key);
+            res.download(plaintext_file, plaintext_file);
           })
           .catch((err) => {
             console.log("Error: ", err);
