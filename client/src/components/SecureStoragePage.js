@@ -279,22 +279,22 @@ export default class SecureStoragePage extends Component {
           <br />
           <br />
           <Grid container justifyContent="center">
-            <Button
-              variant="contained"
-              color={blue[700]}
-              style={{ marginBottom: "5px" }}
+            <a
+              href={
+                process.env.REACT_APP_BASE_URL +
+                "/api/file/" +
+                this.state.fileInfosId
+              }
+              download
             >
-              <a
-                href={
-                  process.env.REACT_APP_BASE_URL +
-                  "/api/file/" +
-                  this.state.fileInfosId
-                }
-                download
+              <Button
+                variant="contained"
+                color={blue[700]}
+                style={{ marginBottom: "5px" }}
               >
                 Download
-              </a>
-            </Button>
+              </Button>
+            </a>
           </Grid>
         </Dialog>
       </Grid>
