@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Divider";
+
 
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -67,7 +69,8 @@ export default class DashboardPage extends Component {
             </Tooltip>
           </Link>
         </h2>
-        <Grid container spacing={2}>
+{/*         <Button color="primary">Restart all</Button>
+ */}        <Grid container spacing={2}>
           {this.state.edges.map((edge, key) => (
             <EdgeCard
               key={edge.id}

@@ -39,17 +39,85 @@ module.exports.updateConfig = async (req, res) => {
         edge.memory
       );
     }
+
     res.status(200).json();
   }
 };
 
 module.exports.start = async (req, res) => {
-  await EdgeModel.findOne({ id: req.params.id }, (error, doc) => {
-    if (error) {
-      res.status(500).json(error);
+  if (parseInt(req.params.id) >= 1 && parseInt(req.params.id) <= 10) {
+    res.status(403).json("No start for rpi");
+  } else {
+    await EdgeModel.findOne({ id: req.params.id }, (error, doc) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        if (doc) {
+          if (!edgeUtils.status_qemu_edge(req.params.id)) {
+            const ret = edgeUtils.start_qemu_edge(
+              req.params.id,
+              doc.machine,
+              doc.arch,
+              doc.cpu,
+              doc.smp,
+              doc.memory
+            );
+            res.status(200).json();
+          } else {
+            res.status(400).json("Edge already started");
+          }
+        } else {
+          res.status(400).json("No edge with this id");
+        }
+      }
+    });
+  }
+};
+
+module.exports.stop = async (req, res) => {
+  if (parseInt(req.params.id) >= 1 && parseInt(req.params.id) <= 10) {
+    let ret = edgeUtils.stop_rpi(req.params.id);
+    if(ret) {
+      res.status(200).json();
     } else {
-      if (doc) {
-        if (!edgeUtils.status_qemu_edge(req.params.id)) {
+      res.status(400).json("Error to stop Rpi");
+    }
+  } else {
+    await EdgeModel.findOne({ id: req.params.id }, async (error, doc) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        if (doc) {
+          const status = await edgeUtils.status_qemu_edge(req.params.id);
+          if (status) {
+            const ret = edgeUtils.stop_qemu_edge(req.params.id);
+            res.status(200).json();
+          } else {
+            res.status(400).json("Edge not started");
+          }
+        } else {
+          res.status(400).json("No edge with this id");
+        }
+      }
+    });
+  }
+};
+
+module.exports.reboot = async (req, res) => {
+  if (parseInt(req.params.id) >= 1 && parseInt(req.params.id) <= 10) {
+    let ret = edgeUtils.restart_rpi(req.params.id);
+    if (ret) {
+      res.status(200).json();
+    } else {
+      res.status(400).json("Error to stop Rpi");
+    }
+  } else {
+    await EdgeModel.findOne({ id: req.params.id }, (error, doc) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        if (doc) {
+          edgeUtils.stop_qemu_edge(req.params.id);
           const ret = edgeUtils.start_qemu_edge(
             req.params.id,
             doc.machine,
@@ -60,56 +128,11 @@ module.exports.start = async (req, res) => {
           );
           res.status(200).json();
         } else {
-          res.status(400).json("Edge already started");
+          res.status(400).json("No edge with this id");
         }
-      } else {
-        res.status(400).json("No edge with this id");
       }
-    }
-  });
-};
-
-module.exports.stop = async (req, res) => {
-  await EdgeModel.findOne({ id: req.params.id }, async (error, doc) => {
-    if (error) {
-      res.status(500).json(error);
-    } else {
-      if (doc) {
-        const status = await edgeUtils.status_qemu_edge(req.params.id);
-        if (status) {
-          const ret = edgeUtils.stop_qemu_edge(req.params.id);
-          res.status(200).json();
-        } else {
-          res.status(400).json("Edge not started");
-        }
-      } else {
-        res.status(400).json("No edge with this id");
-      }
-    }
-  });
-};
-
-module.exports.reboot = async (req, res) => {
-  await EdgeModel.findOne({ id: req.params.id }, (error, doc) => {
-    if (error) {
-      res.status(500).json(error);
-    } else {
-      if (doc) {
-        edgeUtils.stop_qemu_edge(req.params.id);
-        const ret = edgeUtils.start_qemu_edge(
-          req.params.id,
-          doc.machine,
-          doc.arch,
-          doc.cpu,
-          doc.smp,
-          doc.memory
-        );
-        res.status(200).json();
-      } else {
-        res.status(400).json("No edge with this id");
-      }
-    }
-  });
+    });
+  }
 };
 
 module.exports.stress = (req, res) => {};

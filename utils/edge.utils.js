@@ -46,7 +46,7 @@ exports.get_cpu_usage = async (edge) => {
 };
 
 exports.get_available_storage = (edge) => {
-  const host = get_host(edge);
+  const host = exports.get_host(edge);
   try {
     ret = child_process
       .execSync(
@@ -74,6 +74,28 @@ exports.verify_memory_limit = (edges) => {
     memory += edge.memory;
   });
   return memory <= process.env.VIRTUAL_EDGES_MAX_MEMORY;
+};
+
+exports.stop_rpi = (id) => {
+  const host = exports.get_host(id);
+  try {
+    ret = child_process.execSync("ssh " + host + " 'shutdown -H now'").toString();
+    return parseInt(ret);
+  } catch (error) {
+    console.log(error);
+    return -1;
+  }
+};
+
+exports.restart_rpi = (id) => {
+  const host = exports.get_host(id);
+  try {
+    ret = child_process.execSync("ssh " + host + " 'shutdown -r now'").toString();
+    return parseInt(ret);
+  } catch (error) {
+    console.log(error);
+    return -1;
+  }
 };
 
 exports.start_qemu_edge = (id, machine, arch, cpu, smp, memory) => {

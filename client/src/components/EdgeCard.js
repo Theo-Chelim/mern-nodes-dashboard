@@ -7,6 +7,10 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
 
 import { red, orange, green } from "@material-ui/core/colors";
 
@@ -25,7 +29,9 @@ export default class EdgeCard extends Component {
     super(props);
     this.state = {
       available: null,
+      open: false,
     };
+    this.anchorRef = React.useRef(null);
     this.controller = new AbortController();
   }
 
@@ -38,6 +44,17 @@ export default class EdgeCard extends Component {
     clearTimeout(this.intervalAvailability);
   }
 
+  handleToggle = () => {
+    this.setState({ open: !prevOpen });
+  };
+
+  handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
   getAvailability = () => {
     const { signal } = this.controller;
 
@@ -61,12 +78,21 @@ export default class EdgeCard extends Component {
   };
 
   handleLoginButton = (id) => {
-    window.open(
-      process.env.REACT_APP_WEB_SSH_URL +
-        "/?hostname=172.16.100." +
-        id +
-        "&username=root&password=c2lubWFv"
-    );
+    if (parseInt(id) >= 1 && parseInt(id) <= 10) {
+      window.open(
+        process.env.REACT_APP_WEB_SSH_NUC_URL +
+          "/?hostname=172.16.100." +
+          id +
+          "&username=root&password=c2lubWFv"
+      );
+    } else {
+      window.open(
+        process.env.REACT_APP_WEB_SSH_URL +
+          "/?hostname=172.16.100." +
+          id +
+          "&username=root&password=c2lubWFv"
+      );
+    }
   };
 
   handlePowerOffButton = (id) => {
@@ -153,8 +179,37 @@ export default class EdgeCard extends Component {
             </Tooltip>
 
             <Grid container justifyContent="flex-end">
-              <IconButton aria-label="show more">
+              <IconButton
+                aria-label="show more"
+                aria-controls={open ? "composition-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                onClick={handleToggle}
+              >
                 <ExpandMoreIcon />
+                <Popper
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  role={undefined}
+                  placement="bottom-start"
+                  transition
+                  disablePortal
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
+                        onKeyDown={handleListKeyDown}
+                      >
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Popper>
               </IconButton>
             </Grid>
           </CardActions>
