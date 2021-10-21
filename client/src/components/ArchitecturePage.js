@@ -32,7 +32,7 @@ export default class Architecture extends Component {
           { id: 1001, label: "Kibana", color: "#41e0c9" },
           { id: 1002, label: "Elasticsearch", color: "#41e0c9" },
           { id: 1003, label: "MongoDB", color: "#41e0c9" },
-          { id: 1004, label: "SUMO", color: "#41e0c9" },
+          { id: 1004, label: "Backend", color: "#41e0c9" },
           { id: 1005, label: "Dashboard", color: "#41e0c9" },
           { id: 1006, label: "Secure storage module", color: "#41e0c9" },
           { id: 1007, label: "Orchestration algorithms", color: "#41e0c9" },

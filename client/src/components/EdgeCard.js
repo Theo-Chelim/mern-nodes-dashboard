@@ -7,10 +7,6 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
 
 import { red, orange, green } from "@material-ui/core/colors";
 
@@ -31,7 +27,6 @@ export default class EdgeCard extends Component {
       available: null,
       open: false,
     };
-    this.anchorRef = React.useRef(null);
     this.controller = new AbortController();
   }
 
@@ -44,17 +39,7 @@ export default class EdgeCard extends Component {
     clearTimeout(this.intervalAvailability);
   }
 
-  handleToggle = () => {
-    this.setState({ open: !prevOpen });
-  };
 
-  handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    this.setState({ open: false });
-  };
   getAvailability = () => {
     const { signal } = this.controller;
 
@@ -181,13 +166,10 @@ export default class EdgeCard extends Component {
             <Grid container justifyContent="flex-end">
               <IconButton
                 aria-label="show more"
-                aria-controls={open ? "composition-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
-                onClick={handleToggle}
+              
               >
                 <ExpandMoreIcon />
-                <Popper
+               {/*  <Popper
                   open={open}
                   anchorEl={anchorRef.current}
                   role={undefined}
@@ -209,7 +191,7 @@ export default class EdgeCard extends Component {
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
-                </Popper>
+                </Popper> */}
               </IconButton>
             </Grid>
           </CardActions>
