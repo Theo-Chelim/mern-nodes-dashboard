@@ -9,7 +9,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 
-
 import { blue, grey } from "@material-ui/core/colors";
 
 export default function Orchestration() {
@@ -61,23 +60,7 @@ export default function Orchestration() {
                     id="standard-number"
                     variant="standard"
                     type="number"
-                    defaultValue={10}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <br />
-                <Grid item md={12}>
-                  <InputLabel id="bandwith" shrink>
-                    Bandwith requirements
-                  </InputLabel>
-
-                  <TextField
-                    id="standard-number"
-                    variant="standard"
-                    type="number"
-                    defaultValue={10}
+                    defaultValue={0.1}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -98,6 +81,19 @@ export default function Orchestration() {
                 style={{ fontSize: "60px", paddingLeft: "100px" }}
               />
             </Box>
+            <br />
+            <InputLabel id="bandwith" shrink>
+              Bandwith requirements
+            </InputLabel>
+            <TextField
+              id="standard-number"
+              variant="standard"
+              type="number"
+              defaultValue={0.1}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </Grid>
           <Grid item md={2}>
             <Box
@@ -127,23 +123,7 @@ export default function Orchestration() {
                     id="standard-number"
                     variant="standard"
                     type="number"
-                    defaultValue={10}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <br />
-                <Grid item md={12}>
-                  <InputLabel id="bandwith" shrink>
-                    Bandwith requirements
-                  </InputLabel>
-
-                  <TextField
-                    id="standard-number"
-                    variant="standard"
-                    type="number"
-                    defaultValue={10}
+                    defaultValue={0.1}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -164,6 +144,19 @@ export default function Orchestration() {
                 style={{ fontSize: "60px", paddingLeft: "100px" }}
               />
             </Box>
+            <br />
+            <InputLabel id="bandwith" shrink>
+              Bandwith requirements
+            </InputLabel>
+            <TextField
+              id="standard-number"
+              variant="standard"
+              type="number"
+              defaultValue={0.1}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </Grid>
           <Grid item md={2}>
             <Box
@@ -193,23 +186,7 @@ export default function Orchestration() {
                     id="standard-number"
                     variant="standard"
                     type="number"
-                    defaultValue={10}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <br />
-                <Grid item md={12}>
-                  <InputLabel id="bandwith" shrink>
-                    Bandwith requirements
-                  </InputLabel>
-
-                  <TextField
-                    id="standard-number"
-                    variant="standard"
-                    type="number"
-                    defaultValue={10}
+                    defaultValue={0.1}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -230,6 +207,19 @@ export default function Orchestration() {
                 style={{ fontSize: "60px", paddingLeft: "100px" }}
               />
             </Box>
+            <br />
+            <InputLabel id="bandwith" shrink>
+              Bandwith requirements
+            </InputLabel>
+            <TextField
+              id="standard-number"
+              variant="standard"
+              type="number"
+              defaultValue={0.1}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </Grid>
           <Grid item md={2}>
             <Box
@@ -259,23 +249,7 @@ export default function Orchestration() {
                     id="standard-number"
                     variant="standard"
                     type="number"
-                    defaultValue={10}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <br />
-                <Grid item md={12}>
-                  <InputLabel id="bandwith" shrink>
-                    Bandwith requirements
-                  </InputLabel>
-
-                  <TextField
-                    id="standard-number"
-                    variant="standard"
-                    type="number"
-                    defaultValue={10}
+                    defaultValue={0.1}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -302,19 +276,34 @@ export default function Orchestration() {
         <Grid container justifyContent="center">
           <Grid item md={4} justifyContent="center">
             <center>
-              <Button variant="contained" style={{backgroundColor: blue[100]}}>Exact solution</Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: blue[100] }}
+              >
+                Exact solution
+              </Button>
             </center>
           </Grid>{" "}
           <br />
           <Grid item md={4}>
             <center>
-              <Button variant="contained" style={{backgroundColor: blue[100]}}>Heuristics approach</Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: blue[500] }}
+              >
+                Heuristics approach
+              </Button>
             </center>
           </Grid>{" "}
           <br />
           <Grid item md={4}>
             <center>
-              <Button variant="contained" style={{backgroundColor: blue[500]}}>Renforcement learning</Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: blue[100] }}
+              >
+                Renforcement learning
+              </Button>
             </center>
           </Grid>{" "}
         </Grid>

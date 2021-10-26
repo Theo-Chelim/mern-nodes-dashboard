@@ -105,7 +105,7 @@ export default class EdgeCard extends Component {
             </Typography>
             {this.props.arch ? (
               <Typography color="textSecondary" variant="subtitle2">
-                {this.props.arch} / {this.props.core} {this.props.cpu} /
+                {this.props.arch} / {this.props.core} {this.props.cpu} /{" "} 
                 {this.props.memory}mb
               </Typography>
             ) : (
