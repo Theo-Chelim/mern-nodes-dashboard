@@ -2,7 +2,7 @@ import time
 import collections
 import json
 
-with open('parameters.json') as f:
+with open('orchestration/parameters.json') as f:
   data = json.load(f)
 
 Ns = data['Ns']
