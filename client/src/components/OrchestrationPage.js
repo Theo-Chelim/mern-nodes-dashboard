@@ -56,6 +56,7 @@ export default class Orchestration extends Component {
   
   handleHeuristic = () => {
     this.setState({ selected: "heuristic" });
+    this.setState({ selected: "heuristic" });
     this.processAlgorithm();
   };
 

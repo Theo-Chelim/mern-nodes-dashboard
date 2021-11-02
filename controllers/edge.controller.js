@@ -142,8 +142,13 @@ module.exports.getAvailability = async (req, res) => {
   res.status(200).json({ available });
 };
 
-module.exports.getCpuUsage = async (req, res) => {
-  const cpu = await edgeUtils.get_cpu_usage(req.params.id);
+module.exports.getCpuAvailable = async (req, res) => {
+  const cpu = await edgeUtils.get_cpu_available(req.params.id);
+  res.status(200).json({ cpu });
+};
+
+module.exports.getCpuCapacity = async (req, res) => {
+  const cpu = await edgeUtils.get_cpu_capacity(req.params.id);
   res.status(200).json({ cpu });
 };
 
