@@ -24,22 +24,46 @@ exports.get_availability = async (edge) => {
   }
 };
 
-exports.get_cpu_usage = async (edge) => {
+exports.get_cpu_available = async (edge) => {
   const host = exports.get_host(edge);
   const ip = exports.get_ip_address(edge);
   let command;
 
-  if (false) {
-    command = "ssh " + host + " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
+  if (parseInt(edge) >= 1 && parseInt(edge) <= 10) {
+    command = "ssh " + host + " top -b -n 1 | grep Cpu | awk '{print $8}'";
   } else {
     command =
-      'ssh -o "StrictHostKeyChecking=no" ' +
+      "sshpass -p sinmao ssh " +
       ip +
-      " vmstat 1 2 | awk 'NR==4 {print ($13+$14)}'";
+      " top -b -n 1 | grep Cpu | awk '{print $8}'";
   }
   try {
     const result = child_process.execSync(command).toString();
-    return parseInt(result);
+    return parseFloat(result);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.get_cpu_capacity = async (edge) => {
+  const host = exports.get_host(edge);
+  const ip = exports.get_ip_address(edge);
+  let command;
+
+  if (parseInt(edge) >= 1 && parseInt(edge) <= 10) {
+    command =
+      "ssh " +
+      host +
+      " awk -F: '/BogoMIPS/ {sum+=$2} END {print sum}' /proc/cpuinfo";
+  } else {
+    command =
+      "sshpass -p sinmao ssh " +
+      ip +
+      " \"sed -ne '/BogoMIPS/ {s/^[^:]*:(.*)/\1+/;H}; ${g;s/\n//g;s/+$//;p}' /proc/cpuinfo | bc\"";
+  }
+  try {
+    const result = child_process.execSync(command).toString();
+    return parseFloat(result);
   } catch (e) {
     console.log(e);
   }
